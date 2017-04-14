@@ -3,11 +3,11 @@
 
 from __future__ import division
 import math
-from numpy import matrix
+from numpy import matrix, linspace
 from pygameVector import Vec2d
 from intersectionElements import Circle, Line, Light
 
-__all__ = ['intersection', 'reflection', 'refraction']
+__all__ = ['intersection', 'reflection', 'refraction', 'pick_start_points']
 
 
 BASIC_X_AXIS_VECTOR = Vec2d(1, 0)
@@ -43,18 +43,21 @@ def intersection(circle, vector, start_point):
     return ((intersection_one.x, intersection_one.y), (intersection_two.x, intersection_two.y))
 
 
-def start_point(circle, vector):
+def pick_start_points(circle, vector, density, distance=2, tol=1e-2):
 
-    def boarder_intersection_point(circle, vector):
-        vertical_vector = vector.rotate(90)
-        center = circle.center
-        boarder_intersection_point = intersection(circle, vector, center)
-        return boarder_intersection_point
+    v = vector.rotated(90)   # calculate span vector
+    p1, p2 = intersection(circle, v, circle.center)     # intersection point in the vertical direction of vector
+    t_limits = (p2[0]-p1[0])/v.x if round(v.x) != 0 else (p2[1]-p1[1])/v.y     # max/min t that limits the span
+    t_limits = t_limits + 1 if t_limits < 0 else t_limits            # close to the middle
+    t_range = linspace(tol, t_limits-tol, density+1) if 0 < t_limits \
+                else linspace(t_limits+tol, -tol, density+1)               # span of vector factor
+    basic_point_v = Vec2d(p1) - vector*circle.radius*distance           # vector of the starting point
+    start_points_v = [basic_point_v + t*v for t in t_range]             # collection of the start points vector
+    start_points = [(p.x, p.y) for p in start_points_v]
+    return start_points
 
 
-
-
-def compute_direction_on_intersection(circle, incident_light, start_point):
+def compute_direction_on_intersection(circle, incident_light, intersection_point):
     # calculate the C matrix and the K factor of the incident ray
 
     def convert_to_rectangular_coordinate(vertical, tangen):
@@ -70,7 +73,7 @@ def compute_direction_on_intersection(circle, incident_light, start_point):
     radius = circle.radius
     incident_vector = incident_light.k * incident_light.direction    # vector that represent the light direction
 
-    angle = math.pi - math.asin((start_point[1]-center[1])/radius)     # take the left point; angle to calculate the vector of interfac
+    angle = math.pi - math.asin((intersection_point[1]-center[1])/radius)     # take the left point; angle to calculate the vector of interfac
     vertical_direction = Vec2d(math.cos(angle), math.sin(angle))
     tangen_direction = Vec2d((-1)*math.sin(angle), math.cos(angle))
     # the components of the incident ray
@@ -83,12 +86,12 @@ def compute_direction_on_intersection(circle, incident_light, start_point):
     return dict(c=transform_factor, k=incident_k_matrix, tangen=tangen_direction, vertical=vertical_direction)
 
 
-def reflection(circle, incident_light, start_point):
+def reflection(circle, incident_light, intersection_point):
     # attributes of the incident_light
     wavelength =  incident_light.wavelength
     refraction_index = incident_light.refraction_index
     
-    factors = compute_direction_on_intersection(circle, incident_light, start_point)
+    factors = compute_direction_on_intersection(circle, incident_light, intersection_point)
     # light direction
     # formula to calculate the K factor
     factors['k'][0] = (-1) * factors['k'][0]
@@ -99,11 +102,11 @@ def reflection(circle, incident_light, start_point):
     return Light(wavelength, vector, refraction_index)
 
 
-def refraction(circle, incident_light, start_point, refraction_index):
+def refraction(circle, incident_light, intersection_point, refraction_index):
     # attributes of the incident_light
     wavelength = incident_light.wavelength
     
-    factors = compute_direction_on_intersection(circle, incident_light, start_point)
+    factors = compute_direction_on_intersection(circle, incident_light, intersection_point)
     # refraction light direction
     # formula
     wavenum = Light.wavenum(wavelength, refraction_index)
@@ -120,11 +123,9 @@ def refraction(circle, incident_light, start_point, refraction_index):
 
 
 def main():
-    circle = Circle(10, (3, 4))
-    point_a = (-12, 6)
-    point_b = (20, 6)
-    vector = Vec2d(point_b) - Vec2d(point_a)
-    line = Line(point_a, point_b)
+    circle = Circle(1, (0, 0))
+    point_a = (-10, 0)
+    vector = Vec2d(1, 0).normalized()
 
     # test the intersection point correction
     a, b = intersection(circle, vector, point_a)
@@ -146,11 +147,12 @@ def main():
     #         refraction_light.wavelength, refraction_light.refraction_index, refraction_light.k))
 
     # test the boarder
-    vector = Vec2d(2, 4)
-    boarder = intersection_boarder(circle, vector)
-    print (boarder)
-
-
+    vector = Vec2d(3, 4).normalized()
+    start_points = pick_start_points(circle, vector, 10)
+    print (start_points)
+    for p in start_points:
+        intersection_point = intersection(circle, vector, p)
+        print (intersection_point)
 
 
 if __name__ == '__main__':
