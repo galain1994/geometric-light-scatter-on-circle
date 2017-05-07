@@ -5,7 +5,7 @@ from __future__ import division
 import math
 from numpy import matrix, linspace
 from pygameVector import Vec2d
-from intersectionElements import Circle, Line, Light
+from intersectionElements import Circle, Light
 
 __all__ = ['intersection', 'reflection', 'refraction', 'pick_start_points']
 
@@ -70,12 +70,14 @@ def compute_direction_on_intersection(circle, incident_light, intersection_point
         return C
 
     center = circle.center
-    radius = circle.radius
+    radius = circle.radius 
     incident_vector = incident_light.k * incident_light.direction    # vector that represent the light direction
 
-    angle = math.pi - math.asin((intersection_point[1]-center[1])/radius)     # take the left point; angle to calculate the vector of interfac
-    vertical_direction = Vec2d(math.cos(angle), math.sin(angle))
-    tangen_direction = Vec2d((-1)*math.sin(angle), math.cos(angle))
+    _vec = Vec2d(intersection_point[0]-center[0], intersection_point[1]-center[1])
+    angle = math.radians(_vec.angle)
+
+    vertical_direction = Vec2d(math.cos(angle), math.sin(angle)).normalized()
+    tangen_direction = Vec2d((-1)*math.sin(angle), math.cos(angle)).normalized()
     # the components of the incident ray
     incident_k_vertical = incident_vector.dot(vertical_direction)
     incident_k_tangen = incident_vector.dot(tangen_direction)
@@ -129,9 +131,6 @@ def main():
 
     # test the intersection point correction
     a, b = intersection(circle, vector, point_a)
-    # print ('Left point:{0}, Right point:{1}'.format(a, b))
-    # print ('points on the circle:  Left:{0}, Right:{1}'.format(circle.on_circle(a), circle.on_circle(b)))
-    # print ('points on the line:  Left:{0}, Right:{1}'.format(line.on_line(a), line.on_line(b)))
 
     # test reflection light and refraction light
     incident_light = Light(256, vector.normalized(), 1, unit='nm')

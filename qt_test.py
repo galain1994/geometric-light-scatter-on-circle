@@ -12,10 +12,34 @@ last edited: January 2015
 """
 
 import sys
-from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QToolTip, QMessageBox
+import matplotlib
+matplotlib.use('Qt5Agg')
+from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QToolTip, QMessageBox, QSizePolicy
 from PyQt5.QtWidgets import QDesktopWidget, QAction, qApp
 from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtGui import QIcon, QFont
+
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+
+
+class CustomCanvas(FigureCanvas):
+    '''A QWidget
+    '''
+
+    def __init__(self, parent=None, width=10, height=10, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = fig.add_subplot(111)
+
+        self.compute_initial_figure()
+
+        FigureCanvas.__init__(self, fig)
+        self.setParent(parent)
+
+        FigureCanvas.setSizePolicy(self,
+                                   QSizePolicy.Expanding,
+                                   QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)
 
 
 

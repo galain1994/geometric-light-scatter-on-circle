@@ -5,7 +5,7 @@ from __future__ import division
 import matplotlib.pyplot as plt
 from matplotlib import lines
 from pygameVector import Vec2d
-from intersectionElements import Circle, Line, Light
+from intersectionElements import Circle, Light
 from intersectionFuncs import intersection, reflection, refraction, pick_start_points
 
 COLORS = ['#FF0033', '#FF6600', '#FFFF33', '#33FF33',
@@ -82,9 +82,9 @@ def drawer(circle, incident_ray, density, refraction_index, outside_ref_index=1,
 
     incident_line_1 = [draw_linesegment(start_point, end_point, color=COLORS[0]) \
         for (start_point, end_point) in zip(start_points, intersection_points_1)]
-    reflect_line_1 = [light_reflection_outside(circle, reflection_light, intersection_point, color=COLORS[0], times=distance) \
+    reflect_line_1 = [light_reflection_outside(circle, reflection_light, intersection_point, color=COLORS[-1], times=distance) \
         for (reflection_light, intersection_point) in zip(reflect_1, intersection_points_1)]
-    refract_line_1 = [light_intersection(circle, refraction_light, intersection_point, color=COLORS[0]) \
+    refract_line_1 = [light_intersection(circle, refraction_light, intersection_point, color=COLORS[-1]) \
         for (refraction_light, intersection_point) in zip(refract_1, intersection_points_1)]
     incident_lines.append(incident_line_1)
     reflection_lines.append(reflect_line_1)
@@ -97,19 +97,25 @@ def drawer(circle, incident_ray, density, refraction_index, outside_ref_index=1,
         points_and_lines = dict(incident_lines=incident_lines,
                             reflection_lines=reflection_lines,
                             refraction_lines=refraction_lines,
-                            intersection_points=intersection_points)
+                            intersection_points=intersection_points,
+                            reflection_lights=reflection_lights,
+                            refraction_lights=refraction_lights)
         return points_and_lines
 
     incident_lights = refraction_lights[0]
     while time_of_intersection < intersection_time:
-        color_offset = (-1)*time_of_intersection//2 - 1 if time_of_intersection%2 else time_of_intersection//2 
+        time_of_intersection += 1
+        color_offset = (-1)*(time_of_intersection+1)//2 - 1 if (time_of_intersection+1)%2 else (time_of_intersection+1)//2 
         intersect_points = [intersection(circle, incident_light.direction, start_p)[0] \
-                                for (incident_light, start_p) in zip(incident_lights, intersection_points[time_of_intersection-1])]
+                                for (incident_light, start_p) in zip(incident_lights, intersection_points[time_of_intersection-2])]
         intersection_points.append(intersect_points)
+
         reflect_lights = [reflection(circle, incident_light, intersect_point) \
                                 for (incident_light, intersect_point) in zip(incident_lights, intersect_points)]
         refract_lights = [refraction(circle, incident_light, intersect_point, outside_ref_index) \
                                 for (incident_light, intersect_point) in zip(incident_lights, intersect_points)]
+        reflection_lights.append(reflect_lights)
+        refraction_lights.append(refract_lights)
 
         reflect_lines = [light_intersection(circle, reflect_light, intersect_point, COLORS[color_offset]) \
                                 for (reflect_light, intersect_point) in zip(reflect_lights, intersect_points)]
@@ -119,43 +125,63 @@ def drawer(circle, incident_ray, density, refraction_index, outside_ref_index=1,
         refraction_lines.append(refract_lines)
 
         incident_lights = reflect_lights
-        time_of_intersection += 1
 
     intersection_points = [(x, y) for p in intersection_points for (x, y) in p]
     intersection_points = tuple(zip(*intersection_points))
     points_and_lines = dict(incident_lines=incident_lines, 
                             reflection_lines=reflection_lines,
                             refraction_lines=refraction_lines,
-                            intersection_points=intersection_points)
+                            intersection_points=intersection_points,
+                            reflection_lights=reflection_lights,
+                            refraction_lights=refraction_lights)
     return points_and_lines
 
 
 
 def main():
-    radius = 1
+    import time
+    import math
+
+    t1 = time.clock()
+
+    radius = 0.6
     center = (0, 0)
     circle = Circle(radius, center)
-    density = 10
+    density = 2000
     vector = Vec2d(1, 0).normalized()
     incident_light = Light(532, vector, 1, unit='nm')
     refraction_index = 1.335
 
-    points_and_lines = drawer(circle, incident_light, density, refraction_index, intersection_time=2)
+
+    points_and_lines = drawer(circle, incident_light, density, refraction_index, intersection_time=4)
     xy = points_and_lines.pop('intersection_points')
-    plot_lines = [line for l in points_and_lines.values() for ll in l for line in ll]
+    # plot_lines = [line for l in points_and_lines.values() for ll in l for line in ll]
 
-    fig, ax = plt.subplots(1, 1)
-    fig = plt.scatter(xy[0], xy[1])
-    circle_plot = plt.Circle(center, radius, fill=False)
-    plt.gca().add_patch(circle_plot)
-
-    for l in plot_lines:
-        ax.add_line(l)
-
-    plt.axis('equal')
-    boarder = 3
-    plt.axis([-boarder, boarder, -boarder, boarder])
+    x = range(density+1)
+    y = [ll.direction.angle for ll in points_and_lines['refraction_lights'][2]]
+    yy = [ll.direction.angle for ll in points_and_lines['refraction_lights'][2] if ll.direction.angle > 0]
+    print (max(yy))
+    plt.scatter(x, y)
     plt.show()
+
+    # t2 = time.clock() - t1
+
+    # fig, ax = plt.subplots(1, 1)
+    # fig = plt.scatter(xy[0], xy[1])
+    # circle_plot = plt.Circle(center, radius, fill=False)
+    # plt.gca().add_patch(circle_plot)
+    
+    # for l in plot_lines:
+    #     ax.add_line(l)
+
+    # plt.axis('equal')
+    # boarder = 3
+    # plt.axis([-boarder, boarder, -boarder, boarder])
+    
+    # t3 = time.clock() - t1
+    # plt.show()
+
+    # print ('calculate:{0}, plotting:{1}, total:{2}'.format(t2, t3-t2, t3))
 
 
 if __name__ == '__main__':
