@@ -10,10 +10,6 @@ from intersectionElements import Circle, Light
 __all__ = ['intersection', 'reflection', 'refraction', 'pick_start_points']
 
 
-BASIC_X_AXIS_VECTOR = Vec2d(1, 0)
-BASIC_Y_AXIS_VECTOR = Vec2d(0, 1)
-
-
 def intersection(circle, vector, start_point):
     # get circle attributes
     center = Vec2d(circle.center)
@@ -62,10 +58,10 @@ def compute_direction_on_intersection(circle, incident_light, intersection_point
 
     def convert_to_rectangular_coordinate(vertical, tangen):
         # compute the transform factor
-        m11 = BASIC_X_AXIS_VECTOR.dot(vertical)
-        m12 = BASIC_X_AXIS_VECTOR.dot(tangen)
-        m21 = BASIC_Y_AXIS_VECTOR.dot(vertical)
-        m22 = BASIC_Y_AXIS_VECTOR.dot(tangen)
+        m11 = vertical.x
+        m12 = tangen.x
+        m21 = vertical.y
+        m22 = tangen.y
         C = matrix([[m11, m12], [m21, m22]])
         return C
 

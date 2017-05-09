@@ -36,10 +36,46 @@ class Light(object):
         self.wavelength = wavelength * units[unit]    # unit: mm
         self.refraction_index = refraction_index
         self.direction = direction.normalized()
-        self._k = None
         self.k = Light.wavenum(self.wavelength, refraction_index)
+        self.k_vector = self.k * self.direction
+
+    def __repr__(self):
+        direction = tuple(i for i in self.direction)
+        return "Light({0}):{1}".format(self.k, direction)
 
     @classmethod
     def wavenum(self, wavelength, refraction_index):
         k = 2*pi*refraction_index/wavelength
         return k
+
+
+
+class Sphere(object):
+    '''
+    @param:radius float
+    '''
+    def __init__(self, radius, center_or_x=(0, 0, 0), center_y=None, center_z=None):
+        self.radius = radius
+        if not center_y or center_z:
+            self.center = center_or_x
+        else:
+            self.center = (center_or_x, center_y, center_z)
+
+    def on_sphere(self, point, tol=1e-5):
+        left = (pow(point[i]-self.center[i], 2) for i in range(2))
+        if abs(sum(left)-pow(self.radius, 2)) < tol:
+            return True
+        return False
+
+
+if __name__ == '__main__':
+    s = Sphere(10, (0, 0, 0))
+    point = (-10, 0, 0)
+
+    print (s.on_sphere(point))
+
+
+
+
+
+
