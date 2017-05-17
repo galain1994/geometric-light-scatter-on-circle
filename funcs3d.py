@@ -6,7 +6,7 @@ from numpy import matrix
 from pygameVector import Vec3d
 from intersectionElements import Light, Sphere
 
-__all__ = ['generate_start_points', 'calculate_first_intersection', 'calculate_intersection_on_sphere',
+__all__ = ['generate_start_points', 'calculate_intersection_on_sphere',
             'reflection', 'refraction']
 
 
@@ -23,30 +23,21 @@ def generate_start_points(radius, y, amount, tol=1e-2):
     return points
 
 
-def calculate_first_intersection(sphere, start_point):
-    radius = sphere.radius
-    center = sphere.center
-    x = start_point[0] - center[0]
-    z = start_point[2] - center[2]
-    v = math.acos(z/radius)
-    try:
-        u = math.acos((x/(radius*math.sin(v)))) + math.pi
-    except ValueError:
-        return None
-    else:
-        intersection_y = radius * math.sin(u) * math.sin(v)
-        return (x, intersection_y, z)
-
-
 def calculate_intersection_on_sphere(sphere, light, start):
+    # 用与光线与球交点的求解
     v = light.direction
     center_vector = Vec3d(sphere.center)
     radius = sphere.radius
+    if Vec3d(0, 0, 0) == v:
+        return None
     if sphere.on_sphere(start):
+        # 起点在球上，则顺序为（另一点， 起点）
         t = (-2) * (v.x*start[0] + v.y*start[1] + v.z*start[2]) / (v.x**2+v.y**2+v.z**2)
         end = start + t*v
         return (end, start)
     else:
+        # 起点不在球上，顺序为（离起点较近的点， 离起点较远的点）
+        # 与球没有交点，则返回None
         a = v.dot(v)
         b = 2*v.dot(start-center_vector)
         c = (start-center_vector).dot(start-center_vector) - radius*radius
@@ -67,14 +58,14 @@ def compution_on_intersection(sphere, light, intersection_point):
 
     # vector on the surface of the intersection
     unit_n_vector = Vec3d(tuple((intersection_point[i]-center[i])/radius for i in range(3))).normalized()
-    unit_b_vector = light.direction.cross(unit_n_vector)
+    unit_b_vector = (light.direction.cross(unit_n_vector)).normalized()
     unit_t_vector = unit_b_vector.cross(unit_n_vector)
     c = matrix([unit_n_vector, unit_t_vector, unit_b_vector]).T
 
     k_normal = k_li_vector.dot(unit_n_vector)
     k_tangen = k_li_vector.dot(unit_t_vector)
 
-    return dict(c=c, tangen=k_tangen, normal=k_tangen)
+    return dict(c=c, tangen=k_tangen, normal=k_normal)
 
 
 def reflection(sphere, light, intersection_point):
@@ -90,24 +81,23 @@ def reflection(sphere, light, intersection_point):
 
     # reflection light vector
     direction = c * matrix([[normal], [tangen], [0]])
-    direction = Vec3d(direction.A1)
+    direction = Vec3d(direction.A1).normalized()
     return Light(wavelength, direction, refraction_index)
 
 
 def refraction(sphere, light, intersection_point, refraction_index):
     wavelength = light.wavelength
     k = Light.wavenum(wavelength, refraction_index)
-    print (light.k)
-    print (k)
 
     factors = compution_on_intersection(sphere, light, intersection_point)
 
     normal_sgn = 1 if factors['normal'] > 0 else -1
-    normal = normal_sgn * math.sqrt(pow(k, 2) - pow(factors['tangen'], 2))
     tangen = factors['tangen']
+    normal = normal_sgn * math.sqrt(k*k-tangen*tangen)
     c = factors['c']
 
-    direction = Vec3d((c*matrix([[normal], [tangen], [0]])).A1)
+    direction = (c*matrix([[normal], [tangen], [0]])).A1
+    direction = Vec3d(direction).normalized()
     return Light(wavelength, direction, refraction_index)
 
 
@@ -118,15 +108,10 @@ def main():
     light = Light(532, v, 1)
     refraction_index = 1.335
 
-    start_point = (0, -15, 6)
-    intersection_point = calculate_first_intersection(start_point, radius)
-
-    ref_light = reflection(sphere, light, intersection_point)
-    refra_light = refraction(sphere, light, intersection_point, 1.335)
-    
-    intersection_points =  calculate_intersection_on_sphere(sphere, refra_light, intersection_point)
+    start_point = (-15, 0, 6)
+    intersection_point = calculate_intersection_on_sphere(sphere, light, start_point)
     print (intersection_point)
-    print (intersection_points)
+
 
 if __name__ == '__main__':
     main()

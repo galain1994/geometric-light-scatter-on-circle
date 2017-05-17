@@ -62,7 +62,7 @@ class Sphere(object):
             self.center = (center_or_x, center_y, center_z)
 
     def on_sphere(self, point, tol=1e-5):
-        left = (pow(point[i]-self.center[i], 2) for i in range(2))
+        left = (pow(point[i]-self.center[i], 2) for i in range(3))
         if abs(sum(left)-pow(self.radius, 2)) < tol:
             return True
         return False

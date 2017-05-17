@@ -37,7 +37,7 @@ def light_intersection(circle, light, start_point, color='b'):
     return line
 
 
-def drawer(circle, incident_ray, density, refraction_index, outside_ref_index=1, intersection_time=1, distance=2, tol=1e-2, start_point=None):
+def drawer(circle, incident_light, refraction_index, density=1, outside_ref_index=1, intersection_time=1, distance=2, tol=1e-2, start_point=None):
     '''
 
     @param:circle
@@ -54,12 +54,12 @@ def drawer(circle, incident_ray, density, refraction_index, outside_ref_index=1,
 
     radius = circle.radius
     center = circle.center
-    incident_ray_vector = incident_ray.direction.normalized()
+    incident_light_vector = incident_light.direction.normalized()
 
     if not start_point:
-        start_points = pick_start_points(circle, incident_ray_vector, density, distance, tol)
+        start_points = pick_start_points(circle, incident_light_vector, density, distance, tol)
     else:
-        start_points = [start_point]
+        start_points = start_point if isinstance(start_point, list) else [start_point]
 
     intersection_points = []
     reflection_lights = []
@@ -70,12 +70,11 @@ def drawer(circle, incident_ray, density, refraction_index, outside_ref_index=1,
     refraction_lines = []
 
     time_of_intersection = 1
-    intersection_points_1 = [intersection(circle, incident_ray_vector, p)[0] \
-                                for p in start_points]
+    intersection_points_1 = [intersection(circle, incident_light_vector, p)[0] for p in start_points]
     intersection_points.append(intersection_points_1)
-    reflect_1 = [reflection(circle, incident_ray, intersection_point) \
+    reflect_1 = [reflection(circle, incident_light, intersection_point) \
                         for intersection_point in intersection_points_1]
-    refract_1 =  [refraction(circle, incident_ray, intersection_point, refraction_index) \
+    refract_1 =  [refraction(circle, incident_light, intersection_point, refraction_index) \
                         for intersection_point in intersection_points_1]
     reflection_lights.append(reflect_1)
     refraction_lights.append(refract_1)
@@ -144,25 +143,30 @@ def main():
 
     t1 = time.clock()
 
-    radius = 0.6
+    radius = 10
     center = (0, 0)
     circle = Circle(radius, center)
-    density = 2000
+    density = 5
     vector = Vec2d(1, 0).normalized()
     incident_light = Light(532, vector, 1, unit='nm')
     refraction_index = 1.335
 
 
-    points_and_lines = drawer(circle, incident_light, density, refraction_index, intersection_time=4)
-    xy = points_and_lines.pop('intersection_points')
-    # plot_lines = [line for l in points_and_lines.values() for ll in l for line in ll]
+    # points_and_lines = drawer(circle, incident_light, refraction_index, density, intersection_time=3)
+    # xy = points_and_lines.pop('intersection_points')
+    # plot_lines = [line for l in (points_and_lines['incident_lines'], points_and_lines['refraction_lines'], points_and_lines['reflection_lines']) for ll in l for line in ll]
 
-    x = range(density+1)
-    y = [ll.direction.angle for ll in points_and_lines['refraction_lights'][2]]
-    yy = [ll.direction.angle for ll in points_and_lines['refraction_lights'][2] if ll.direction.angle > 0]
-    print (max(yy))
-    plt.scatter(x, y)
-    plt.show()
+    start_point = [(-11, 6), (-11, 8)]
+    points_and_lines = drawer(circle, incident_light, refraction_index, 1, intersection_time=3, start_point=start_point)
+    refraction_lights = points_and_lines['refraction_lights']
+    print (refraction_lights)
+
+    # x = range(density+1)
+    # y = [ll.direction.angle for ll in points_and_lines['refraction_lights'][2]]
+    # yy = [ll.direction.angle for ll in points_and_lines['refraction_lights'][2] if ll.direction.angle > 0]
+    # print (max(yy))
+    # plt.scatter(x, y)
+    # plt.show()
 
     # t2 = time.clock() - t1
 
@@ -175,7 +179,7 @@ def main():
     #     ax.add_line(l)
 
     # plt.axis('equal')
-    # boarder = 3
+    # boarder = 12
     # plt.axis([-boarder, boarder, -boarder, boarder])
     
     # t3 = time.clock() - t1

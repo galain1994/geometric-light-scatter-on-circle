@@ -121,33 +121,34 @@ def refraction(circle, incident_light, intersection_point, refraction_index):
 
 
 def main():
-    circle = Circle(1, (0, 0))
-    point_a = (-10, 0)
+    circle = Circle(10, (0, 0))
+    point_a = (-11, 6)
     vector = Vec2d(1, 0).normalized()
 
     # test the intersection point correction
     a, b = intersection(circle, vector, point_a)
 
     # test reflection light and refraction light
-    incident_light = Light(256, vector.normalized(), 1, unit='nm')
+    incident_light = Light(532, vector.normalized(), 1, unit='nm')
     
     reflection_light = reflection(circle, incident_light, point_a)
     # print ('reflection direction:{0}, wavelength:{1}, refraction_index:{2}, k:{3}'.format(reflection_light.direction,\
     #         reflection_light.wavelength, reflection_light.refraction_index, reflection_light.k))
 
-    refraction_light = refraction(circle, incident_light, point_a, 1.334)
+    refraction_light = refraction(circle, incident_light, a, 1.334)
+    print (refraction_light.direction.angle)
     intersection_point = intersection(circle, refraction_light.direction, a)
     # print (intersection_point[0], intersection_point[1])
     # print ('refraction direction:{0}, wavelength:{1}, refraction_index:{2}, k:{3}'.format(refraction_light.direction, \
     #         refraction_light.wavelength, refraction_light.refraction_index, refraction_light.k))
 
     # test the boarder
-    vector = Vec2d(3, 4).normalized()
-    start_points = pick_start_points(circle, vector, 10)
-    print (start_points)
-    for p in start_points:
-        intersection_point = intersection(circle, vector, p)
-        print (intersection_point)
+    # vector = Vec2d(3, 4).normalized()
+    # start_points = pick_start_points(circle, vector, 10)
+    # print (start_points)
+    # for p in start_points:
+    #     intersection_point = intersection(circle, vector, p)
+    #     print (intersection_point)
 
 
 if __name__ == '__main__':
