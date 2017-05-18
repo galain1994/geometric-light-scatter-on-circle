@@ -244,7 +244,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
     def selectionChange(self):
         if "Continuous" == self.comboBox.currentText():
-            self.clearData()
             self.data_frame.setHidden(True)
             self.box_lightNum.setEnabled(True)
             self.box_lightNum.setMinimum(2)
