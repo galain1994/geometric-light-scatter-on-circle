@@ -45,23 +45,23 @@ def generate_skeleton(radius, horizon_or_vertical):
 
 
 def generate_centerline(radius):
-    vertical_line = draw_line((0, 0, -radius), (0, 0, radius), 'solid', 'b')
-    horizon_line = draw_line((-radius, 0, 0), (radius, 0, 0), 'solid', 'b')
-    plain_line = draw_line((0, -radius, 0), (0, radius, 0), 'solid', 'b')
+    vertical_line = draw_line((0, 0, -radius), (0, 0, radius), ':', 'b', 0.5)
+    horizon_line = draw_line((-radius, 0, 0), (radius, 0, 0), ':', 'b', 0.5)
+    plain_line = draw_line((0, -radius, 0), (0, radius, 0), ':', 'b', 0.5)
     return [vertical_line, horizon_line, plain_line]
 
 
-def draw_line(s, e, linestyle='dashed', color='b'):
-    l = art3d.Line3D((s[0], e[0]), (s[1], e[1]), (s[2], e[2]), color=color)
+def draw_line(s, e, linestyle='dashed', color='b', linewidth=1.5, label=None):
+    l = art3d.Line3D((s[0], e[0]), (s[1], e[1]), (s[2], e[2]), color=color, linewidth=linewidth, label=label)
     l.set_linestyle(linestyle)
     return l
 
 
-def draw_line_outside(start, vector, length, linestyle='dashed', color='b'):
+def draw_line_outside(start, vector, length, linestyle='dashed', color='b', linewidth=1.5, label=None):
     s = start
     vector = vector.normalized() * length
     e = start + vector
-    return draw_line(s, e, linestyle, color)
+    return draw_line(s, e, linestyle, color, linewidth, label)
 
 
 def drawer(sphere, incident_light, refraction_index, start_point, intersection_time=1):
@@ -138,16 +138,16 @@ def multi_line_drawer(sphere, incident_light, refraction_index, start_point_list
     points = []
     reflection_lines = []
     refraction_lines = []
-    lines = {'reflection_lines': reflection_lines,
-             'refraction_lines': refraction_lines}
+    lines = {'refraction_lines': refraction_lines,
+             'reflection_lines': reflection_lines}
 
     points.append(start_point_list)
     time_of_intersection = 1
     color_offset = 0
     # 第一次作用
     first_intersection_point_list = [calculate_intersection_on_sphere(sphere, incident_light, p) for p in start_point_list]
-
     incident_line = [draw_line(s, e[0], 'solid', COLORS[color_offset]) for (s, e) in zip(start_point_list, first_intersection_point_list) if e]
+    incident_line[0].set_label('%s' % time_of_intersection)
     lines['incident_line'] = [incident_line, ]
 
     first_intersection_point_list = [p[0] for p in first_intersection_point_list if p] # 清除无效点
@@ -187,6 +187,7 @@ def multi_line_drawer(sphere, incident_light, refraction_index, start_point_list
             # 折射 出射线段
             refraction_lines = [draw_line_outside(s, light.direction, 2*radius, 'solid', COLORS[color_offset])
                                     for (light, s) in zip(refraction_lights, intersection_point_list)]
+            refraction_lines[0].set_label('%s' % time_of_intersection)
             lines['refraction_lines'].append(refraction_lines)
 
             # 作用点（下次）
@@ -195,6 +196,7 @@ def multi_line_drawer(sphere, incident_light, refraction_index, start_point_list
             points.append(next_intersection_point_list)
             # 反射光线段
             reflection_lines = [draw_line(s, e, color=COLORS[color_offset]) for (s, e) in zip(intersection_point_list, next_intersection_point_list)]
+            reflection_lines[0].set_label('%s' % time_of_intersection)
             lines['reflection_lines'].append(reflection_lines)
             incident_lights = reflection_lights
             intersection_point_list = next_intersection_point_list
@@ -218,8 +220,8 @@ def main():
     y = -15
     z = 6
     start_point = (x, y, z)
-    start_point_list1 = generate_multi_start_points(radius, 5, set_y=-15, set_z=6)
-    start_point_list2 = generate_multi_start_points(radius, 5, set_y=-15)
+    # start_point_list1 = generate_multi_start_points(radius, 5, set_y=-15, set_z=6)
+    start_point_list2 = generate_multi_start_points(radius, 10, set_y=-15)
 
     intersection_time = 3
     points_and_lines = multi_line_drawer(sphere, light, refraction_index, start_point_list2, intersection_time)
@@ -242,14 +244,15 @@ def main():
     horizon_skeleton = generate_skeleton(radius, 'h')
     vertical_skeleton = generate_skeleton(radius, 'v')
     plain_skeleton = generate_skeleton(radius, 'p')
-    ax.plot(*horizon_skeleton, color='b')
-    ax.plot(*vertical_skeleton, color='b')
-    ax.plot(*plain_skeleton, color='b')
+    ax.plot(*horizon_skeleton, ':',  linewidth=0.8, color='b')
+    ax.plot(*vertical_skeleton, ':',  linewidth=0.8, color='b')
+    ax.plot(*plain_skeleton, ':',  linewidth=0.8, color='b')
     for line in generate_centerline(radius):
         ax.add_line(line)
     ax.set_xlabel('X Label')
     ax.set_ylabel('Y Label')
     ax.set_zlabel('Z Label')
+    ax.legend(loc='upper left', frameon=False)
     plt.show()
 
 
