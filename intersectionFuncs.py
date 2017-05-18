@@ -53,7 +53,7 @@ def pick_start_points(circle, vector, density, distance=2, tol=1e-2):
     return start_points
 
 
-def compute_direction_on_intersection(circle, incident_light, intersection_point):
+def ref_factors(circle, incident_light, intersection_point):
     # calculate the C matrix and the K factor of the incident ray
 
     def convert_to_rectangular_coordinate(vertical, tangen):
@@ -75,80 +75,45 @@ def compute_direction_on_intersection(circle, incident_light, intersection_point
     vertical_direction = Vec2d(math.cos(angle), math.sin(angle)).normalized()
     tangen_direction = Vec2d((-1)*math.sin(angle), math.cos(angle)).normalized()
     # the components of the incident ray
-    incident_k_vertical = incident_vector.dot(vertical_direction)
-    incident_k_tangen = incident_vector.dot(tangen_direction)
-    incident_k_matrix = matrix([[incident_k_vertical], [incident_k_tangen]])
+    incident_k_vertical = incident_vector.dot(vertical_direction)   # 法向
+    incident_k_tangen = incident_vector.dot(tangen_direction)       # 切向
     # factor that determine the relection ray and refraction ray
     transform_factor = convert_to_rectangular_coordinate(vertical_direction, tangen_direction)
 
-    return dict(c=transform_factor, k=incident_k_matrix, tangen=tangen_direction, vertical=vertical_direction)
+    return dict(c=transform_factor, tangen=incident_k_tangen, vertical=incident_k_vertical)
 
 
-def reflection(circle, incident_light, intersection_point):
+
+def reflection(factors, incident_light):
     # attributes of the incident_light
     wavelength =  incident_light.wavelength
     refraction_index = incident_light.refraction_index
     
-    factors = compute_direction_on_intersection(circle, incident_light, intersection_point)
     # light direction
     # formula to calculate the K factor
-    factors['k'][0] = (-1) * factors['k'][0]
-    matrix_vector = factors['c'] * factors['k']
-    vector_x = matrix_vector.A1[0]
-    vector_y = matrix_vector.A1[1]
-    vector = Vec2d(vector_x, vector_y)
+    incident_k_vertical = (-1) * factors['vertical']
+    incident_k_tangen = factors['tangen']
+    direction = factors['c'] * matrix([[incident_k_vertical], [incident_k_tangen]])
+    vector = Vec2d(direction.A1).normalized()
     return Light(wavelength, vector, refraction_index)
 
 
-def refraction(circle, incident_light, intersection_point, refraction_index):
+def refraction(factors, incident_light, refraction_index):
     # attributes of the incident_light
     wavelength = incident_light.wavelength
     
-    factors = compute_direction_on_intersection(circle, incident_light, intersection_point)
     # refraction light direction
     # formula
     wavenum = Light.wavenum(wavelength, refraction_index)
-    K = factors['k']
-    incident_k_vertical = K.A1[0]
-    incident_k_tangen = K.A1[1]
-    K.A1[0] = int(incident_k_vertical/abs(incident_k_vertical)) \
-         * math.sqrt(wavenum*wavenum - incident_k_tangen*incident_k_tangen)
-    matrix_vector = factors['c'] * K
-    vector_x = matrix_vector.A1[0]
-    vector_y = matrix_vector.A1[1]
-    vector = Vec2d(vector_x, vector_y).normalized()
+    incident_k_vertical = factors['vertical']
+    incident_k_tangen = factors['tangen']
+    sign = 1 if incident_k_vertical > 0 else -1
+    kt_vertical = sign * math.sqrt(wavenum*wavenum - incident_k_tangen*incident_k_tangen)
+    direction = factors['c'] * matrix([[kt_vertical], [incident_k_tangen]])
+    vector = Vec2d(direction.A1).normalized()
     return Light(wavelength, vector, refraction_index)
 
 
-def main():
-    circle = Circle(10, (0, 0))
-    point_a = (-11, 6)
-    vector = Vec2d(1, 0).normalized()
-
-    # test the intersection point correction
-    a, b = intersection(circle, vector, point_a)
-
-    # test reflection light and refraction light
-    incident_light = Light(532, vector.normalized(), 1, unit='nm')
-    
-    reflection_light = reflection(circle, incident_light, point_a)
-    # print ('reflection direction:{0}, wavelength:{1}, refraction_index:{2}, k:{3}'.format(reflection_light.direction,\
-    #         reflection_light.wavelength, reflection_light.refraction_index, reflection_light.k))
-
-    refraction_light = refraction(circle, incident_light, a, 1.334)
-    print (refraction_light.direction.angle)
-    intersection_point = intersection(circle, refraction_light.direction, a)
-    # print (intersection_point[0], intersection_point[1])
-    # print ('refraction direction:{0}, wavelength:{1}, refraction_index:{2}, k:{3}'.format(refraction_light.direction, \
-    #         refraction_light.wavelength, refraction_light.refraction_index, refraction_light.k))
-
-    # test the boarder
-    # vector = Vec2d(3, 4).normalized()
-    # start_points = pick_start_points(circle, vector, 10)
-    # print (start_points)
-    # for p in start_points:
-    #     intersection_point = intersection(circle, vector, p)
-    #     print (intersection_point)
 
 
 if __name__ == '__main__':

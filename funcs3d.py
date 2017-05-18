@@ -7,7 +7,7 @@ from pygameVector import Vec3d
 from intersectionElements import Light, Sphere
 
 __all__ = ['generate_start_points', 'calculate_intersection_on_sphere',
-            'reflection', 'refraction']
+            'reflection', 'refraction', 'ref_factors']
 
 
 def generate_start_points(radius, y, amount, tol=1e-2):
@@ -50,7 +50,7 @@ def calculate_intersection_on_sphere(sphere, light, start):
         return (start+t1*v, start+t2*v)
         
 
-def compution_on_intersection(sphere, light, intersection_point):
+def ref_factors(sphere, light, intersection_point):
     center = sphere.center
     radius = sphere.radius
 
@@ -68,11 +68,9 @@ def compution_on_intersection(sphere, light, intersection_point):
     return dict(c=c, tangen=k_tangen, normal=k_normal)
 
 
-def reflection(sphere, light, intersection_point):
+def reflection(factors, light):
     wavelength = light.wavelength
     refraction_index = light.refraction_index
-
-    factors = compution_on_intersection(sphere, light, intersection_point)
 
     # light factor 
     normal = (-1) * factors['normal']
@@ -85,11 +83,9 @@ def reflection(sphere, light, intersection_point):
     return Light(wavelength, direction, refraction_index)
 
 
-def refraction(sphere, light, intersection_point, refraction_index):
+def refraction(factors, light, refraction_index):
     wavelength = light.wavelength
     k = Light.wavenum(wavelength, refraction_index)
-
-    factors = compution_on_intersection(sphere, light, intersection_point)
 
     normal_sgn = 1 if factors['normal'] > 0 else -1
     tangen = factors['tangen']
@@ -99,22 +95,6 @@ def refraction(sphere, light, intersection_point, refraction_index):
     direction = (c*matrix([[normal], [tangen], [0]])).A1
     direction = Vec3d(direction).normalized()
     return Light(wavelength, direction, refraction_index)
-
-
-def main():
-    radius = 10
-    sphere = Sphere(radius)
-    v = Vec3d(1, 0, 0)
-    light = Light(532, v, 1)
-    refraction_index = 1.335
-
-    start_point = (-15, 0, 6)
-    intersection_point = calculate_intersection_on_sphere(sphere, light, start_point)
-    print (intersection_point)
-
-
-if __name__ == '__main__':
-    main()
 
 
 

@@ -153,8 +153,9 @@ def multi_line_drawer(sphere, incident_light, refraction_index, start_point_list
     first_intersection_point_list = [p[0] for p in first_intersection_point_list if p] # 清除无效点
     points.append(first_intersection_point_list)
 
-    first_reflection_lights = [reflection(sphere, incident_light, p) for p in first_intersection_point_list]
-    first_refraction_lights = [refraction(sphere, incident_light, p, refraction_index) for p in first_intersection_point_list]
+    factors_list = [ref_factors(sphere, incident_light, p) for p in first_intersection_point_list]
+    first_reflection_lights = [reflection(factor, incident_light) for factor in factors_list]
+    first_refraction_lights = [refraction(factor, incident_light, refraction_index) for factor in factors_list]
 
     first_reflection_lines = [draw_line_outside(s, light.direction, 2*radius, 'solid', COLORS[color_offset])
                                 for (light, s) in zip(first_reflection_lights, first_intersection_point_list)]
@@ -176,11 +177,12 @@ def multi_line_drawer(sphere, incident_light, refraction_index, start_point_list
             # 选择颜色
             color_offset = (-1)*(time_of_intersection+1)//2 - 1 if (time_of_intersection+1)%2 else (time_of_intersection+1)//2 
             # 球内反射光
-            reflection_lights = [reflection(sphere, light, p) 
-                                    for (light, p) in zip(incident_lights, intersection_point_list)]
+            factors_list = [ref_factors(sphere, light, p) for (light, p) in zip(incident_lights, intersection_point_list)]
+            reflection_lights = [reflection(factor, light) 
+                                    for (factor, light) in zip(factors_list, incident_lights)]
             # 折射光，出射
-            refraction_lights = [refraction(sphere, light, p, refraction_index)
-                                    for (light, p) in zip(incident_lights, intersection_point_list)]
+            refraction_lights = [refraction(factor, light, refraction_index)
+                                    for (factor, light) in zip(factors_list, incident_lights)]
 
             # 折射 出射线段
             refraction_lines = [draw_line_outside(s, light.direction, 2*radius, 'solid', COLORS[color_offset])
