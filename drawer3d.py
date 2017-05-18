@@ -44,20 +44,20 @@ def generate_skeleton(radius, horizon_or_vertical):
     return (x, y, z)
 
 
-def generate_centerline(radius):
-    vertical_line = draw_line((0, 0, -radius), (0, 0, radius), 'solid', 'b')
-    horizon_line = draw_line((-radius, 0, 0), (radius, 0, 0), 'solid', 'b')
-    plain_line = draw_line((0, -radius, 0), (0, radius, 0), 'solid', 'b')
+def generate_centerline(radius, linewidth=0.8):
+    vertical_line = draw_line((0, 0, -radius), (0, 0, radius), 'solid', 'b', linewidth)
+    horizon_line = draw_line((-radius, 0, 0), (radius, 0, 0), 'solid', 'b', linewidth)
+    plain_line = draw_line((0, -radius, 0), (0, radius, 0), 'solid', 'b', linewidth)
     return [vertical_line, horizon_line, plain_line]
 
 
-def draw_line(s, e, linestyle='dashed', color='b'):
-    l = art3d.Line3D((s[0], e[0]), (s[1], e[1]), (s[2], e[2]), color=color)
+def draw_line(s, e, linestyle='dashed', color='b', linewidth=1.5):
+    l = art3d.Line3D((s[0], e[0]), (s[1], e[1]), (s[2], e[2]), color=color, linewidth=linewidth)
     l.set_linestyle(linestyle)
     return l
 
 
-def draw_line_outside(start, vector, length, linestyle='dashed', color='b'):
+def draw_line_outside(start, vector, length, linestyle='dashed', color='b', linewidth=1):
     s = start
     vector = vector.normalized() * length
     e = start + vector
@@ -242,9 +242,9 @@ def main():
     horizon_skeleton = generate_skeleton(radius, 'h')
     vertical_skeleton = generate_skeleton(radius, 'v')
     plain_skeleton = generate_skeleton(radius, 'p')
-    ax.plot(*horizon_skeleton, color='b')
-    ax.plot(*vertical_skeleton, color='b')
-    ax.plot(*plain_skeleton, color='b')
+    ax.plot(*horizon_skeleton, color='b', linewidth=1)
+    ax.plot(*vertical_skeleton, color='b', linewidth=1)
+    ax.plot(*plain_skeleton, color='b', linewidth=1)
     for line in generate_centerline(radius):
         ax.add_line(line)
     ax.set_xlabel('X Label')
