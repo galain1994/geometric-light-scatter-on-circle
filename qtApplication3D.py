@@ -11,10 +11,15 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from PyQt5 import QtCore, QtWidgets, QtGui
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-from matplotCanvas import ScatterCanvas
-from intersectionElements import Light, Circle, Sphere
-from intersectionDrawer import drawer
+from matplotCanvas import ScatterCanvas, MplPlot3dCanvas
 from pygameVector import Vec3d, Vec2d
+
+
+class MyNavigationToolbar(NavigationToolbar):
+
+    # 去掉不需要的工具栏项目
+    toolitems =tuple(i for i in NavigationToolbar.toolitems
+                            if i[0] not in ('Subplots', ))
 
 
 class ApplicationWindow(QtWidgets.QMainWindow):
@@ -25,9 +30,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.data = {'start_point':[], 'vector':[]}
 
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)   #  Make Qt delete this widget when widget accept close event
-        self.setWindowTitle('球形粒子几何光学追迹')
+        self.setWindowTitle('3D球粒子几何光学追迹')
 
-        self.if_3d = False
+        self.if_3d = True
 
         self.addMenu()
 
@@ -38,8 +43,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         self.statusBar()
 
-        self.canvas_2d = ScatterCanvas(self.main_widget, 20, 10)
-        self.addCanvas(self.canvas_2d)
+        self.canvas_3d = MplPlot3dCanvas(self.main_widget, 20, 10)
+        self.addCanvas(self.canvas_3d)
+        self.canvas_3d.axes.mouse_init()            # 初始化鼠标的操作
 
         self.main_widget.setFocus()
         self.setCentralWidget(self.main_widget)
@@ -51,8 +57,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.data_layout = QtWidgets.QVBoxLayout()
         self.data_layout.setAlignment(QtCore.Qt.AlignLeft)
         self.data_frame.setLayout(self.data_layout)
-        self.data_frame.setSizePolicy(QtWidgets.QSizePolicy.Expanding,
-                                      QtWidgets.QSizePolicy.Expanding)
 
         # show light information
         data_form = QtWidgets.QVBoxLayout()
@@ -72,6 +76,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         scrollArea.setAlignment(QtCore.Qt.AlignLeft)
         scrollArea.setWidget(qbox)
         scrollArea.setWidgetResizable(True)
+        scrollArea.setMinimumSize(scrollArea.sizeHint())
 
         qbox.updateGeometry()
         self.data_layout.addWidget(scrollArea)
@@ -82,17 +87,22 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         coordinates = QtWidgets.QHBoxLayout()
         coordinates.setAlignment(QtCore.Qt.AlignLeft)
         input_form.addRow('Start Point:  ', coordinates)
-        lx, ly = QtWidgets.QLabel('x:   '), QtWidgets.QLabel('y:   ')
-        x, y = [QtWidgets.QDoubleSpinBox() for i in range(2)]
-        self.co = (x, y)
+        lx, ly, lz = QtWidgets.QLabel('x:   '), QtWidgets.QLabel('y:   '), QtWidgets.QLabel('z:')
+        x, y, z = [QtWidgets.QDoubleSpinBox() for i in range(3)]
+        self.co = (x, y, z) if if_3d else (x, y)
         for _co in self.co:
             _co.setSingleStep(0.1)
             _co.setMinimum(-radius)
             _co.setMaximum(radius-0.01)
-        x.setValue(1)
-        x.setMaximum(-radius-1)
-        x.setMinimum(-2*radius)
-        label = (lx, ly)
+        if not if_3d:
+            x.setValue(1)
+            x.setMaximum(-radius-1)
+            x.setMinimum(-2*radius)
+        else:
+            y.setValue(1)
+            y.setMaximum(-radius-1)
+            y.setMinimum(-2*radius)
+        label = (lx, ly, lz) if if_3d else (lx, ly)
         for _co, _label in zip(self.co, label):
             coordinates.addWidget(_label)
             coordinates.addWidget(_co)
@@ -102,11 +112,14 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         direction_layout.setContentsMargins(-20, 0, 0, 0)
         direction_layout.setAlignment(QtCore.Qt.AlignLeft)
         input_form.addRow('Direction:  ', direction_layout)
-        lvx, lvy = QtWidgets.QLabel('Vx: '), QtWidgets.QLabel('Vy: ')
-        vx, vy = [QtWidgets.QDoubleSpinBox() for i in range(2)]
-        vx.setValue(1)
-        self.v = (vx, vy)
-        lv = (lvx, lvy)
+        lvx, lvy, lvz = QtWidgets.QLabel('Vx: '), QtWidgets.QLabel('Vy: '), QtWidgets.QLabel('Vz:')
+        vx, vy, vz = [QtWidgets.QDoubleSpinBox() for i in range(3)]
+        if not if_3d:
+            vx.setValue(1)
+        else:
+            vy.setValue(1)
+        self.v = (vx, vy, vz) if if_3d else (vx, vy)
+        lv = (lvx, lvy, lvz) if if_3d else (lvx, lvy)
         for _v in self.v:
             _v.setSingleStep(0.1)
             _v.setMinimum(-radius)
@@ -123,11 +136,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
     def createTable(self):
         self.tableWidget = QtWidgets.QTableWidget()
-        self.tableWidget.setGeometry(0, 0, 100, 600)
         self.tableWidget.setRowCount(1)
         self.tableWidget.setColumnCount(2)
-        self.tableWidget.setColumnWidth(0, 100)
-        self.tableWidget.setColumnWidth(1, 100)        
+        self.tableWidget.setColumnWidth(0, 120)
+        self.tableWidget.setColumnWidth(1, 120)        
         self.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem('Start Point'))
         self.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem('Direction'))
 
@@ -224,12 +236,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.light_attribute_form.addWidget(box)
 
         self.simulate_button = QtWidgets.QPushButton('Simulate')
-        self.simulate_button.pressed.connect(self.simulate_2d)
+        self.simulate_button.pressed.connect(self.simulate_3d)
 
         self.canvas_layout.addLayout(self.light_attribute_form)
         self.canvas_layout.addWidget(self.simulate_button)
 
-        self.fig_toolbar = NavigationToolbar(canvas, self.main_widget)
+        self.fig_toolbar = MyNavigationToolbar(canvas, self.main_widget)
         self.canvas_layout.addWidget(canvas)
         self.canvas_layout.addStretch()
         self.canvas_layout.addWidget(self.fig_toolbar)
@@ -340,70 +352,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             print (e)
             self.statusBar().showMessage('Image not save Exception:%s' % e)
 
-    def simulate_2d(self):
-        # clear plot
-        ax = self.canvas_2d.axes
-        ax.clear()
-        self.canvas_2d.draw()
-
-        radius = float(self.box_radius.value())
-        lightNum = int(self.box_lightNum.value())
-        waveLength = float(self.box_waveLength.value())
-        times = int(self.box_times.value())
-        refraction_index = float(self.box_m.value())
-
-        circle = Circle(radius)
-        circle_patch = plt.Circle((0,0), radius, fill=False)
-
-        if_continuous = True if 'Continuous' == self.comboBox.currentText() else False
-        if not if_continuous:
-            lights = []
-            points_and_lines = []
-            start_points = self.data['start_point']
-            directions = self.data['vector']
-            for p, v in zip(start_points, directions):
-                # TODO: convert string to float
-                v = (float(v[0]), float(v[1]))
-                light = Light(waveLength, Vec2d(v).normalized(), 1, unit='nm')
-                lights.append(light)
-                points_and_lines.append(drawer(circle, light, refraction_index, intersection_time=times, start_point=p))
-            x = []
-            y = []
-            lines = []
-            for pl in points_and_lines:
-                xy = pl['intersection_points']
-                x.extend(xy[0])
-                y.extend(xy[1])
-                lines.append(pl['incident_lines'])
-                lines.append(pl['refraction_lines'])
-                lines.append(pl['reflection_lines'])
-            lines = [ ll for line in lines for l in line for ll in l ]
-        else:
-            v = (1, 0)
-            light = Light(waveLength, Vec2d(v).normalized(), 1, unit='nm')
-            points_and_lines = drawer(circle, light, refraction_index, density=lightNum, intersection_time=times)
-            xy = points_and_lines['intersection_points']
-            x = xy[0]
-            y = xy[1]
-            lines = [line for l in (points_and_lines['incident_lines'], \
-                                    points_and_lines['refraction_lines'], \
-                                    points_and_lines['reflection_lines']) for ll in l for line in ll]
-
-        ax.scatter(x, y)
-        ax.add_patch(circle_patch)
-        ax.axis('equal')
-        boarder = radius+3
-        ax.axis([-boarder, boarder, -boarder, boarder])
-        for l in lines:
-            ax.add_line(l)
-        self.canvas_2d.draw()
-
-    def addOutputArea(self):
-
-        self.output_frame = QtWidgets.QFrame()
-        self.output_box = QtWidgets.QVBoxLayout()
+    def simulate_3d(self):
+        
         pass
-
 
     def show_documentation(self):
         pass
