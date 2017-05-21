@@ -150,15 +150,32 @@ def main():
     radius = 10
     center = (0, 0)
     circle = Circle(radius, center)
-    density = 5
+    density = 2000
     vector = Vec2d(1, 0).normalized()
     incident_light = Light(532, vector, 1, unit='nm')
     refraction_index = 1.335
 
 
-    points_and_lines = drawer(circle, incident_light, refraction_index, density, intersection_time=1)
+    points_and_lines = drawer(circle, incident_light, refraction_index, density, intersection_time=8)
     xy = points_and_lines.pop('intersection_points')
-    plot_lines = [line for l in (points_and_lines['incident_lines'], points_and_lines['refraction_lines'], points_and_lines['reflection_lines']) for ll in l for line in ll]
+
+    lights = points_and_lines['refraction_lights']
+    lights[0] = points_and_lines['reflection_lights'][0]
+    x = list(range(len(lights[0])))
+    y = []
+    for l in lights:
+        y.append([light.direction.angle for light in l])
+
+    fig, axes = plt.subplots(2, 4)
+    axes[0][0].scatter(x, y[0])
+    axes[0][1].scatter(x, y[1])
+    axes[0][2].scatter(x, y[2])
+    axes[0][3].scatter(x, y[3])
+    axes[1][0].scatter(x, y[4])
+    axes[1][1].scatter(x, y[5])
+    axes[1][2].scatter(x, y[6])
+    axes[1][3].scatter(x, y[7])
+    plt.show()
 
     # x = range(density+1)
     # y = [ll.direction.angle for ll in points_and_lines['refraction_lights'][2]]
@@ -167,22 +184,22 @@ def main():
     # plt.scatter(x, y)
     # plt.show()
 
-    t2 = time.clock() - t1
+    # t2 = time.clock() - t1
 
-    fig, ax = plt.subplots(1, 1)
-    fig = plt.scatter(xy[0], xy[1])
-    circle_plot = plt.Circle(center, radius, fill=False)
-    plt.gca().add_patch(circle_plot)
+    # fig, ax = plt.subplots(1, 1)
+    # fig = plt.scatter(xy[0], xy[1])
+    # circle_plot = plt.Circle(center, radius, fill=False)
+    # plt.gca().add_patch(circle_plot)
     
-    for l in plot_lines:
-        ax.add_line(l)
+    # for l in plot_lines:
+    #     ax.add_line(l)
 
-    plt.axis('equal')
-    boarder = 12
-    plt.axis([-boarder, boarder, -boarder, boarder])
+    # plt.axis('equal')
+    # boarder = 12
+    # plt.axis([-boarder, boarder, -boarder, boarder])
     
-    t3 = time.clock() - t1
-    plt.show()
+    # t3 = time.clock() - t1
+    # plt.show()
 
     # print ('calculate:{0}, plotting:{1}, total:{2}'.format(t2, t3-t2, t3))
 
