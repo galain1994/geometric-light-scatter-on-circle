@@ -14,10 +14,10 @@ from PyQt5.QtWidgets import QSizePolicy
 class ScatterCanvas(FigureCanvas):
 
     def __init__(self, parent=None, width=5, height=4, dpi=100):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111)
+        self.fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = self.fig.add_subplot(111)
 
-        FigureCanvas.__init__(self, fig)
+        FigureCanvas.__init__(self, self.fig)
         self.setParent(parent)
 
         FigureCanvas.setSizePolicy(self, 
@@ -29,11 +29,11 @@ class ScatterCanvas(FigureCanvas):
 class MplPlot3dCanvas(FigureCanvas):
 
     def __init__(self, parent=None, width=5, height=4, dpi=100):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = Axes3D(fig)
+        self.fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = Axes3D(self.fig)
         self.axes.view_init()
 
-        FigureCanvas.__init__(self, fig)
+        FigureCanvas.__init__(self, self.fig)
         self.setParent(parent)
 
         FigureCanvas.setSizePolicy(self, 

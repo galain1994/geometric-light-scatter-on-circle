@@ -150,7 +150,7 @@ def main():
     radius = 10
     center = (0, 0)
     circle = Circle(radius, center)
-    density = 2000
+    density = 20
     vector = Vec2d(1, 0).normalized()
     incident_light = Light(532, vector, 1, unit='nm')
     refraction_index = 1.335
