@@ -175,6 +175,8 @@ def main():
     axes[1][1].scatter(x, y[5])
     axes[1][2].scatter(x, y[6])
     axes[1][3].scatter(x, y[7])
+    for i, a in enumerate([ i for j in axes for i in j]):
+        a.set_title('N = %s' % i)
     plt.show()
 
     # x = range(density+1)

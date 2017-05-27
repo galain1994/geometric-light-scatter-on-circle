@@ -225,23 +225,27 @@ def main():
     light = Light(532, v, 1, unit='nm')
     refraction_index = 1.335
 
-    start_point_list1 = generate_multi_start_points(radius, 2000, set_y=-15, set_z=9.99)
-    # start_point_list2 = generate_multi_start_points(radius, 10, set_y=-15)
+    set_z = 9.99
+    start_point_list1 = generate_multi_start_points(radius, 2000, set_y=-15, set_z=set_z)
+    # start_point_list2 = generate_multi_start_points(radius, 5, set_y=-15)
 
     intersection_time = 4
     points_and_lines_and_lights = multi_line_drawer(sphere, light, refraction_index, start_point_list1, intersection_time)
-    # points = points_and_lines_and_lights['points']
+    points = points_and_lines_and_lights['points']
 
 
     lights = points_and_lines_and_lights['lights']['refraction_lights']
     lights[0] = points_and_lines_and_lights['lights']['reflection_lights'][0]
+
     x = []
     y = []
     import matplotlib.pyplot as plt
     for l in lights:
         x.append(list(range(len(l))))
-        y.append([ light.direction.get_angle_between(Vec3d(light.direction.x, light.direction.y, 0)) for light in l])  # 抬升角
-        # y.append([ Vec3d(light.direction.x, light.direction.y, 0).get_angle_between(Vec3d(1, 0, 0)) for light in l]) # 方位角
+        # y.append([ light.direction.get_angle_between(Vec3d(light.direction.x, light.direction.y, 0)) for light in l])  # 抬升角
+        y.append([ Vec3d(light.direction.x, light.direction.y, 0).get_angle_between(v) for light in l]) # 方位角
+
+
 
     fig, axes = plt.subplots(2, 2)
     axes[0][0].scatter(x[0], y[0])
@@ -252,6 +256,19 @@ def main():
     axes[1][0].set_title('N=3')
     axes[1][1].scatter(x[3], y[3])
     axes[1][1].set_title('N=4')
+    for ax in axes[1]:
+        ax.set_xlabel('x')
+    for col, ax in enumerate(axes[0]):
+        ax.axis(sharex=axes[1][col])
+    # axes[0][0].set_ylabel('Lifting angle')
+    axes[0][0].set_ylabel('azimuth angle')
+    # axes[1][0].set_ylabel('Lifting angle')
+    axes[1][0].set_ylabel('azimuth angle')
+    for row, ax in enumerate(axes):
+        for col, row_ax in enumerate(ax):
+            row_ax.axis(sharey=axes[row][0])
+    # plt.suptitle('Lifting angle (Z=%s)' % set_z)
+    plt.suptitle('Azimuth angle (Z=%s)' % set_z)
     plt.show()
 
 

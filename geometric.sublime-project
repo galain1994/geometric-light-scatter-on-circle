@@ -2,7 +2,7 @@
 	"build_systems":
 	[
 		{
-			"shell_cmd": "/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/venv/bin/python"
+			"shell_cmd": "E:\\PythonProject\\geometric-light-scatter-on-circle\\venv\\Scripts\\python"
 		}
 	],
 	"folders":
@@ -11,5 +11,5 @@
 			"path": "."
 		}
 	],
-	"virtualenv": "/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/venv"
+	"virtualenv": "E:\\PythonProject\\geometric-light-scatter-on-circle\\venv\\Scripts\\python"
 }
