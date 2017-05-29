@@ -23,3 +23,26 @@ start_point vector
 右侧：
 数据输出部分。
 分别显示第几次作用的出射角度。
+
+
+# 3D funcs
+
+## Functions
+
+- drawer
+- multi_line_drawer
+
+### drawer
+
+Single light drawer.
+parameter:
+`@sphere: One of the intersectionElements class`  Define the sphere with certain radius and center
+`@incident_light: One of the intersectionElements class`  see Elements about light.
+`@refraction_index: Definition of the refraction index inside the sphere`  
+`@start_point: The coordinates of the starting point` Tuple or list contains three float numbers.
+`@intersection_time: Times of the intersection` How many times the light intersect the sphere.
+
+Return:
+`dict`  
+`points: the intersection points` `list`  first intersection: points[0] second intersection point: points[1] etc.
+`lines: the lines to draw in the figre` `list` 
