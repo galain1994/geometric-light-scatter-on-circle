@@ -14,7 +14,13 @@ from intersectionElements import Sphere, Light
 
 
 COLORS = ['#FF0033', '#FF6600', '#FFFF33', '#33FF33',
-          '#00FFFF', '#006666', '#CC00CC', '#000000', '#CCCCCC']    # red, orange, yellow, green, blue, navy, purple, black, silver
+          '#00FFFF', '#006666', '#CC00CC', '#000000',
+          '#CCCCCC', '#e8b32d', '#8470ff', '#87cefa',
+          '#20b2aa', '#f08080', '#ff6eb4', '#f0fff0',
+          '#ff3030', '#1e90ff', '#00b2ee', '#97ffff',
+          '#b23aee', '#98f5ff', '#8a2be2', '#00f5ff',
+          '#00f5ff', '#8a6bee', '#ec0070', '#22e2c1',
+          '#9e81d9', '#9202f5', '#01d9e1', '#00ff7f']
 
 
 def generate_sphere_cordinates(radius, longitude, latitude):
@@ -51,6 +57,25 @@ def generate_centerline(radius):
     return [vertical_line, horizon_line, plain_line]
 
 
+def draw_sphere_at_axes(ax, radius, longitude, latitude, linewidth, color, alpha=0.1):
+
+    x, y, z = generate_sphere_cordinates(radius, longitude, latitude)
+    ax.plot_surface(x, y, z, color=color, alpha=alpha)             # 画出表面
+    horizon_skeleton, vertical_skeleton, plain_skeleton = generate_skeleton(radius, 'h'),\
+                                                          generate_skeleton(radius, 'v'),\
+                                                          generate_skeleton(radius, 'p')    # 球内部的圆
+    skeletons = [horizon_skeleton, vertical_skeleton, plain_skeleton]
+    for skeleton in skeletons:
+        ax.plot(*skeleton, ':', linewidth=linewidth, color=color)
+    for line in generate_centerline(radius):
+        ax.add_line(line)
+
+    ax.set_xlabel('X Label')
+    ax.set_ylabel('Y Label')
+    ax.set_zlabel('Z Label')
+    return ax
+
+
 def draw_line(s, e, linestyle='dashed', color='b', linewidth=1.5, label=None):
     l = art3d.Line3D((s[0], e[0]), (s[1], e[1]), (s[2], e[2]), color=color, linewidth=linewidth, label=label)
     l.set_linestyle(linestyle)
@@ -72,18 +97,21 @@ def drawer(sphere, incident_light, refraction_index, start_point, intersection_t
     lines = []
 
     time_of_intersection = 1
+    color_offset = 0
     points.append(start_point)
     first_intersection_point = calculate_intersection_on_sphere(sphere, incident_light, start_point)[0]
     points.append(first_intersection_point)
-    lines.append(draw_line(start_point, first_intersection_point, 'solid'))
+    lines.append(draw_line(start_point, first_intersection_point, 'solid', COLORS[color_offset]))
+    lines[0].set_label('%s' % time_of_intersection)
 
-    reflection_light = reflection(sphere, incident_light, first_intersection_point)
-    refraction_light = refraction(sphere, incident_light, first_intersection_point, refraction_index)
+    factor = ref_factors(sphere, incident_light, first_intersection_point)
+    reflection_light = reflection(factor, incident_light)
+    refraction_light = refraction(factor, incident_light, refraction_index)
 
-    first_reflection_line = draw_line_outside(first_intersection_point, reflection_light.direction, 2*radius, 'solid')
+    first_reflection_line = draw_line_outside(first_intersection_point, reflection_light.direction, 2*radius, 'solid', COLORS[color_offset])
     second_intersection_point = calculate_intersection_on_sphere(sphere, refraction_light, first_intersection_point)[0]
     points.append(second_intersection_point)
-    first_refraction_line = draw_line(first_intersection_point, second_intersection_point)
+    first_refraction_line = draw_line(first_intersection_point, second_intersection_point, color=COLORS[color_offset])
     lines.append(first_reflection_line)
     lines.append(first_refraction_line)
 
@@ -95,14 +123,16 @@ def drawer(sphere, incident_light, refraction_index, start_point, intersection_t
         intersection_point = second_intersection_point
         while time_of_intersection < intersection_time:
             time_of_intersection += 1
-            reflection_light = reflection(sphere, incident_light, intersection_point)
-            refraction_light = refraction(sphere, incident_light, intersection_point, 1)
+            color_offset = (-1)*(time_of_intersection+1)//2 - 1 if (time_of_intersection+1)%2 else (time_of_intersection+1)//2
+            factor = ref_factors(sphere, incident_light, intersection_point)
+            reflection_light = reflection(factor, incident_light)
+            refraction_light = refraction(factor, incident_light, 1)
 
-            refraction_line = draw_line_outside(intersection_point, refraction_light.direction, 2*radius, 'solid')
+            refraction_line = draw_line_outside(intersection_point, refraction_light.direction, 2*radius, 'solid', color=COLORS[color_offset])
 
             next_intersection_point = calculate_intersection_on_sphere(sphere, reflection_light, intersection_point)[0]
             points.append(next_intersection_point)
-            reflection_line = draw_line(intersection_point, next_intersection_point)
+            reflection_line = draw_line(intersection_point, next_intersection_point, color=COLORS[color_offset])
             lines.append(reflection_line)
             lines.append(refraction_line)
             incident_light = reflection_light
@@ -151,7 +181,7 @@ def multi_line_drawer(sphere, incident_light, refraction_index, start_point_list
     # 第一次作用
     first_intersection_point_list = [calculate_intersection_on_sphere(sphere, incident_light, p) for p in start_point_list]
     incident_line = [draw_line(s, e[0], 'solid', COLORS[color_offset]) for (s, e) in zip(start_point_list, first_intersection_point_list) if e]
-    incident_line[0].set_label('%s' % time_of_intersection)
+    incident_line[0].set_label('%s' % time_of_intersection)         # 将第一条线的颜色添加到注记中
     lines['incident_line'] = [incident_line, ]
 
     first_intersection_point_list = [p[0] for p in first_intersection_point_list if p] # 清除无效点
@@ -213,6 +243,7 @@ def multi_line_drawer(sphere, incident_light, refraction_index, start_point_list
     return dict(points=points,
                 lines=lines,
                 lights=lights)
+
 
 
 
@@ -283,8 +314,11 @@ def main():
     # ax.legend(loc='upper left', frameon=False)
     # plt.show()
 
+def test():
+    
+    pass
 
 if __name__ == '__main__':
-    main()
+    test()
     
 

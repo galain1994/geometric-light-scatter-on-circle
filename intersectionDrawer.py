@@ -10,7 +10,14 @@ from intersectionFuncs import intersection, reflection, refraction, pick_start_p
 
 
 COLORS = ['#FF0033', '#FF6600', '#FFFF33', '#33FF33',
-          '#00FFFF', '#006666', '#CC00CC', '#000000', '#CCCCCC']    # red, orange, yellow, green, blue, navy, purple, black, silver
+          '#00FFFF', '#006666', '#CC00CC', '#000000',
+          '#CCCCCC', '#e8b32d', '#8470ff', '#87cefa',
+          '#20b2aa', '#f08080', '#ff6eb4', '#f0fff0',
+          '#ff3030', '#1e90ff', '#00b2ee', '#97ffff',
+          '#b23aee', '#98f5ff', '#8a2be2', '#00f5ff',
+          '#00f5ff', '#8a6bee', '#ec0070', '#22e2c1',
+          '#9e81d9', '#9202f5', '#01d9e1', '#00ff7f']
+
 
 def draw_linesegment(start_point, end_point, color):
     # draw line from to point coordinates

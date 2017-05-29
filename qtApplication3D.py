@@ -12,7 +12,9 @@ from mpl_toolkits.mplot3d import Axes3D
 from PyQt5 import QtCore, QtWidgets, QtGui
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotCanvas import ScatterCanvas, MplPlot3dCanvas
-from pygameVector import Vec3d, Vec2d
+from intersectionElements import Sphere, Light
+from pygameVector import Vec3d
+from drawer3d import drawer, multi_line_drawer, generate_multi_start_points, draw_sphere_at_axes
 
 
 class MyNavigationToolbar(NavigationToolbar):
@@ -32,8 +34,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)   #  Make Qt delete this widget when widget accept close event
         self.setWindowTitle('3D球粒子几何光学追迹')
 
-        self.if_3d = True
-
+        self.elevation_angle = None
+        self.azimuth = None
         self.addMenu()
 
         self.main_widget = QtWidgets.QWidget(self)
@@ -43,17 +45,20 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         self.statusBar()
 
-        self.canvas_3d = MplPlot3dCanvas(self.main_widget, 20, 10)
+        self.canvas_3d = MplPlot3dCanvas(self.main_widget)
         self.addCanvas(self.canvas_3d)
         self.canvas_3d.axes.mouse_init()            # 初始化鼠标的操作
+
+        self.addOutputArea()
+        self.output_frame.setHidden(True)
 
         self.main_widget.setFocus()
         self.setCentralWidget(self.main_widget)
 
     def addDataArea(self, radius):
-        if_3d = self.if_3d
 
         self.data_frame = QtWidgets.QFrame()
+        self.data_frame.setMaximumWidth(500)
         self.data_layout = QtWidgets.QVBoxLayout()
         self.data_layout.setAlignment(QtCore.Qt.AlignLeft)
         self.data_frame.setLayout(self.data_layout)
@@ -64,8 +69,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         data_form.setSpacing(10)
         data_form.addWidget(self.tableWidget)
         self.data_form = data_form
-
-        # line1.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
 
         qbox = QtWidgets.QGroupBox('Light')
         qbox.setLayout(data_form)
@@ -89,20 +92,15 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         input_form.addRow('Start Point:  ', coordinates)
         lx, ly, lz = QtWidgets.QLabel('x:   '), QtWidgets.QLabel('y:   '), QtWidgets.QLabel('z:')
         x, y, z = [QtWidgets.QDoubleSpinBox() for i in range(3)]
-        self.co = (x, y, z) if if_3d else (x, y)
+        self.co = (x, y, z)
         for _co in self.co:
             _co.setSingleStep(0.1)
             _co.setMinimum(-radius)
             _co.setMaximum(radius-0.01)
-        if not if_3d:
-            x.setValue(1)
-            x.setMaximum(-radius-1)
-            x.setMinimum(-2*radius)
-        else:
-            y.setValue(1)
-            y.setMaximum(-radius-1)
-            y.setMinimum(-2*radius)
-        label = (lx, ly, lz) if if_3d else (lx, ly)
+        y.setValue(1)
+        y.setMaximum(-radius-1)
+        y.setMinimum(-2*radius)
+        label = (lx, ly, lz)
         for _co, _label in zip(self.co, label):
             coordinates.addWidget(_label)
             coordinates.addWidget(_co)
@@ -114,12 +112,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         input_form.addRow('Direction:  ', direction_layout)
         lvx, lvy, lvz = QtWidgets.QLabel('Vx: '), QtWidgets.QLabel('Vy: '), QtWidgets.QLabel('Vz:')
         vx, vy, vz = [QtWidgets.QDoubleSpinBox() for i in range(3)]
-        if not if_3d:
-            vx.setValue(1)
-        else:
-            vy.setValue(1)
-        self.v = (vx, vy, vz) if if_3d else (vx, vy)
-        lv = (lvx, lvy, lvz) if if_3d else (lvx, lvy)
+        vy.setValue(1)
+        self.v = (vx, vy, vz)
+        lv = (lvx, lvy, lvz)
         for _v in self.v:
             _v.setSingleStep(0.1)
             _v.setMinimum(-radius)
@@ -202,6 +197,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def addCanvas(self, canvas):
         # plotting area
         self.canvas_frame = QtWidgets.QFrame()
+        # self.canvas_frame.setMaximumWidth(800)
         self.canvas_layout = QtWidgets.QVBoxLayout()
         self.canvas_frame.setLayout(self.canvas_layout)
 
@@ -211,14 +207,15 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.comboBox.currentIndexChanged.connect(self.selectionChange)
         self.canvas_layout.addWidget(self.comboBox)
 
-        self.light_attribute_form = QtWidgets.QHBoxLayout()
+        self.light_attribute_form = QtWidgets.QGridLayout()
 
         lable_m, label_radius, label_waveLength, label_lightNum, label_times = QtWidgets.QLabel('m (refraction index):'), \
                     QtWidgets.QLabel('Radius (mm):'), QtWidgets.QLabel('Wave Length (nm):'), \
                     QtWidgets.QLabel('Light Nums:'), QtWidgets.QLabel('times:')
-        labels = [lable_m, label_radius, label_waveLength, label_lightNum, label_times]
         self.box_m, self.box_radius, self.box_waveLength, self.box_lightNum, self.box_times = [QtWidgets.QDoubleSpinBox() for i in range(5)]
-        boxes = [self.box_m, self.box_radius, self.box_waveLength, self.box_lightNum, self.box_times]
+        labels = [[label_radius], [lable_m, label_waveLength], [label_lightNum, label_times]]
+        boxes = [[self.box_radius], [self.box_m, self.box_waveLength], [self.box_lightNum, self.box_times]]
+
         self.box_m.setDecimals(4)
         self.box_m.setValue(1.335)
         self.box_radius.setDecimals(2)
@@ -228,12 +225,46 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.box_waveLength.setValue(532)
         self.box_lightNum.setDecimals(0)
         self.box_lightNum.setMaximum(2000)
-        self.box_lightNum.setValue(1)
+        self.box_lightNum.setValue(3)
+        self.box_lightNum.setEnabled(False)
         self.box_times.setDecimals(0)
         self.box_times.setValue(3)
-        for label, box in zip(labels, boxes):
-            self.light_attribute_form.addWidget(label)
-            self.light_attribute_form.addWidget(box)
+        self.box_times.setMaximum(20)
+
+        for row, widgets in enumerate(zip(labels, boxes)):
+            for column, (label, box) in enumerate(zip(*widgets)):
+                self.light_attribute_form.addWidget(label, row, column*2)
+                self.light_attribute_form.addWidget(box, row, column*2+1)
+
+        self.set_coordinate_frame = QtWidgets.QFrame()
+        self.set_coordinate_form = QtWidgets.QHBoxLayout()
+        self.set_coordinate_frame.setLayout(self.set_coordinate_form)
+        self.check_x, self.check_y, self.check_z = QtWidgets.QCheckBox('set x'),\
+                                                   QtWidgets.QCheckBox('set y'),\
+                                                   QtWidgets.QCheckBox('set z')
+        self.check_y.setChecked(True)
+        self.check_y.setEnabled(False)
+        self.check_y.setMaximumWidth(50)
+        self.co_checkbox = [self.check_x, self.check_z]
+        for _check in self.co_checkbox:
+            _check.setEnabled(False)
+            _check.setMaximumWidth(50)
+            _check.setChecked(False)
+            _check.stateChanged.connect(self.checkbox_changed)
+        self.set_x, self.set_y, self.set_z = [QtWidgets.QDoubleSpinBox() for i in range (3)]
+        self.set_y.setRange(-20, -10)
+        self.set_y.setValue(-15.0)
+        self.co_settings = [self.set_x, self.set_z]
+        for _set in self.co_settings:
+            _set.setEnabled(False)
+
+        self.set_coordinate_form.addWidget(self.check_y)
+        self.set_coordinate_form.addWidget(self.set_y)
+        for _check, _set in zip(self.co_checkbox, self.co_settings):
+            self.set_coordinate_form.addWidget(_check)
+            self.set_coordinate_form.addWidget(_set)
+        self.canvas_layout.addWidget(self.set_coordinate_frame)
+
 
         self.simulate_button = QtWidgets.QPushButton('Simulate')
         self.simulate_button.pressed.connect(self.simulate_3d)
@@ -243,20 +274,37 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         self.fig_toolbar = MyNavigationToolbar(canvas, self.main_widget)
         self.canvas_layout.addWidget(canvas)
-        self.canvas_layout.addStretch()
         self.canvas_layout.addWidget(self.fig_toolbar)
+        self.fig_toolbar.hide()
 
         self.main_layout.addWidget(self.canvas_frame)
+
+    def checkbox_changed(self):
+        radius = self.box_radius.value()
+        self.set_y.setValue(-1.5*radius)
+        for _check, _set in zip(self.co_checkbox, self.co_settings):
+            if _check.isChecked():
+                _set.setEnabled(True)
+                _set.setRange(-radius, radius)
+            else:
+                _set.setEnabled(False)
 
     def selectionChange(self):
         if "Continuous" == self.comboBox.currentText():
             self.data_frame.setHidden(True)
+            self.data_layout.setEnabled(False)
             self.box_lightNum.setEnabled(True)
-            self.box_lightNum.setMinimum(2)
+            self.box_lightNum.setMinimum(3)
+            self.output_frame.setHidden(False)
+            for _check in self.co_checkbox:
+                _check.setEnabled(True)
         else:
+            for _check in self.co_checkbox:
+                _check.setEnabled(False)
             self.data_frame.setHidden(False)
             self.data_layout.setEnabled(True)
             self.box_lightNum.setEnabled(False)
+            self.output_frame.setHidden(True)
 
     def addMenu(self):
 
@@ -264,10 +312,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.file_menu = QtWidgets.QMenu('&File', self)
         self.file_menu.addAction('&New', self.fileNew, 
                                  QtCore.Qt.CTRL + QtCore.Qt.Key_N)
-        self.file_menu.addAction('&Open', self.fileOpen,
-                                 QtCore.Qt.CTRL + QtCore.Qt.Key_O)
-        self.file_menu.addAction('Save Data', self.fileSave,
-                                 QtCore.Qt.CTRL + QtCore.Qt.SHIFT + QtCore.Qt.Key_S)
+        # self.file_menu.addAction('&Open', self.fileOpen,
+                                 # QtCore.Qt.CTRL + QtCore.Qt.Key_O)
+        self.file_menu.addAction('Save Elevation Angle', self.save_elevation_angle)
+        self.file_menu.addAction('Save Azimuth', self.save_azimuth)
         self.file_menu.addAction('&Save Image', self.imageSave,
                                  QtCore.Qt.CTRL + QtCore.Qt.Key_S)
         self.file_menu.addAction('&Quit', self.fileQuit, 
@@ -284,8 +332,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # refresh the User Interface
         self.clearData()
 
+    '''
     def fileOpen(self):
-        # open exsiting data file
         self.data = {'start_point':[], 'vector':[]}
         files_types = "CSV data files (*.csv)"
         fileDialog = QtWidgets.QFileDialog()
@@ -314,47 +362,190 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 i += 1
             self.delete_line.setMaximum(self.tableWidget.rowCount())
             self.delete_line.setMinimum(1)
+    '''
 
-    def fileSave(self):
-        # save data to file
-        data = self.data
-        header = ['start_point', 'vector']
-        start_point = data['start_point']
-        vector = data['vector']
+    def save_elevation_angle(self):
+        if not self.elevation_angle:
+            self.statusBar().showMessage('No data simulated.')
+            return
         result = []
-        for p, v in zip(start_point, vector):
-            result.append(dict(start_point=p, vector=v))
+        for i, _angle in enumerate(self.elevation_angle):
+            _angle.insert(0, i+1)
+            result.append(_angle)
         files_types = "CSV data files (*.csv)"
         fileDialog = QtWidgets.QFileDialog()
         fileDialog.setAcceptMode(QtWidgets.QFileDialog.AcceptSave)
         filename, fil = QtWidgets.QFileDialog.getSaveFileName(self, 'Save file', os.path.expanduser('~'), files_types)
         try:
             with open(filename, 'w') as f:
-                f_csv = csv.DictWriter(f, header)
-                f_csv.writeheader()
+                f_csv = csv.writer(f)
+                first_row = ['0', ]
+                first_row.extend(list(range(len(self.elevation_angle[0])-1)))
+                f_csv.writerow(first_row)
                 f_csv.writerows(result)
         except FileNotFoundError:
             self.statusBar().showMessage('data not save.')
+
+    def save_azimuth(self):
+        if not self.azimuth:
+            self.statusBar().showMessage('No data simulated.')
+            return
+        result = []
+        for i, _angle in enumerate(self.azimuth):
+            _angle.insert(0, i+1)
+            result.append(_angle)
+        files_types = "CSV data files (*.csv)"
+        fileDialog = QtWidgets.QFileDialog()
+        fileDialog.setAcceptMode(QtWidgets.QFileDialog.AcceptSave)
+        filename, fil = QtWidgets.QFileDialog.getSaveFileName(self, 'Save file', os.path.expanduser('~'), files_types)
+        try:
+            with open(filename, 'w') as f:
+                f_csv = csv.writer(f)
+                first_row = ['0', ]
+                first_row.extend(list(range(len(self.azimuth[0])-1)))
+                f_csv.writerow(first_row)
+                f_csv.writerows(result)
+        except FileNotFoundError:
+            self.statusBar().showMessage('data not save.')
+
 
     def fileQuit(self):
         # quit app
         self.close()
 
     def imageSave(self):
-        # save the simulation result
-        image_types = "Image File (*.png *jpg)"
-        fileDialog = QtWidgets.QFileDialog()
-        fileDialog.setAcceptMode(QtWidgets.QFileDialog.AcceptSave)
-        filename, fil = QtWidgets.QFileDialog.getSaveFileName(self, 'Save file', os.path.expanduser('~'), image_types)
         try:
-            self.fig_toolbar.save_figure(filename)
+            self.fig_toolbar.save_figure()
         except Exception as e:
-            print (e)
             self.statusBar().showMessage('Image not save Exception:%s' % e)
 
     def simulate_3d(self):
-        
-        pass
+        ax = self.canvas_3d.axes
+        ax.clear()
+        self.canvas_3d.draw()
+
+        radius = float(self.box_radius.value())
+        lightNum = int(self.box_lightNum.value())
+        waveLength = float(self.box_waveLength.value())
+        times = int(self.box_times.value())
+        refraction_index = float(self.box_m.value())
+
+        sphere = Sphere(radius)
+        longitude, latitude, linewidth, color, alpha = 100, 100, 0.8, 'b', 0.1
+        draw_sphere_at_axes(ax, radius, longitude, latitude, linewidth, color, alpha)
+
+        x, y, z = [], [], []
+        points_and_lines = []
+        points = []
+        lines = []
+        if_continuous = True if 'Continuous' == self.comboBox.currentText() else False
+        if not if_continuous:
+            start_points = self.data['start_point']
+            directions = self.data['vector']
+            for p, v in zip(start_points, directions):
+                vector = Vec3d(float(v[0]), float(v[1]), float(v[2])).normalized()        # 光线方向且单位化
+                light = Light(waveLength, vector, 1, unit='nm')
+                points_and_lines.append(drawer(sphere, incident_light=light, 
+                                               refraction_index=refraction_index, 
+                                               start_point=p, intersection_time=times))
+            for p_l in points_and_lines:
+                for p in p_l['points']:
+                    points.append(p)
+                for l in p_l['lines']:
+                    lines.append(l)
+            xyz = tuple(zip(*points))
+            x, y, z = xyz if xyz else [[]]*3
+
+        else:
+            for i in reversed(range(self.output_figure_layout.count())):
+                if self.output_figure_layout.itemAt(i).widget():
+                    self.output_figure_layout.itemAt(i).widget().setParent(None)
+            co_settings = []
+            for _check, _set in zip(self.co_checkbox, self.co_settings):
+                if _check.isChecked():
+                    co_settings.append(float(_set.value()))
+                else:
+                    co_settings.append(None)
+            v = Vec3d(0, 1, 0)
+            light = Light(waveLength, v, 1, unit='nm')
+            start_point_list = generate_multi_start_points(radius, lightNum, 
+                                                           set_x=co_settings[0], 
+                                                           set_y=self.set_y.value(),
+                                                           set_z=co_settings[1])
+            points_and_lines_and_lights = multi_line_drawer(sphere, light, refraction_index, start_point_list, times)
+            points = points_and_lines_and_lights['points']
+            lines = points_and_lines_and_lights['lines'].values()
+            lines = [p_line for type_lines in lines for time_lines in type_lines for p_line in time_lines]
+            x, y, z = points
+            lights = points_and_lines_and_lights['lights']['refraction_lights']
+            lights[0] = points_and_lines_and_lights['lights']['reflection_lights'][0]
+            output_x = []
+            self.elevation_angle = []
+            self.azimuth = []
+            for l in lights:
+                output_x.append(list(range(len(l))))
+                self.elevation_angle.append([ light.direction.get_angle_between(Vec3d(light.direction.x, light.direction.y, 0)) for light in l])  # 抬升角
+                self.azimuth.append([ Vec3d(light.direction.x, light.direction.y, 0).get_angle_between(Vec3d(1, 0, 0)) for light in l]) # 方位角
+            for i, (_ele, _azi) in enumerate(zip(self.elevation_angle, self.azimuth)):
+                _output_canvas_frame = QtWidgets.QFrame()
+                _output_canvas_hbox = QtWidgets.QHBoxLayout()
+                _output_canvas_frame.setLayout(_output_canvas_hbox)
+                _canvas1 = ScatterCanvas(width=1, height=1)
+                _canvas2 = ScatterCanvas(width=1, height=1)
+                ax2 = _canvas2.fig.axes[0]
+                ax1 = _canvas1.fig.axes[0]
+                ax1.scatter(output_x[i], _ele)
+                ax2.scatter(output_x[i], _azi)
+                ax1.set_title('(%i time) elevation angle distribution' % (i+1))
+                ax2.set_title('(%i time) azimuth distribution' % (i+1))
+                ax1.set_ylabel('angle (degree)')
+                ax2.set_ylabel('angle (degree)')
+                ax1.set_xlabel('num of light')
+                ax2.set_xlabel('num of light')
+                _canvas1.setMinimumHeight(500)
+                _canvas2.setMinimumHeight(500)
+                _canvas1.setMinimumWidth(500)
+                _canvas2.setMinimumWidth(500)
+                _output_canvas_hbox.addWidget(_canvas1)
+                _output_canvas_hbox.addWidget(_canvas2)
+                self.output_figure_layout.addWidget(_output_canvas_frame)
+
+        ax.scatter(x, y, z)
+        boarder = radius + 3
+        ax.axis([-boarder, boarder, -boarder, boarder])
+        if lines:
+            for l in lines:
+                ax.add_line(l)
+        ax.legend(loc='upper left', frameon=False)
+        self.canvas_3d.draw()
+
+
+    def addOutputArea(self):
+
+        self.output_frame = QtWidgets.QFrame()
+        self.output_frame.setMinimumWidth(500)
+        self.output_frame.setSizePolicy(QtWidgets.QSizePolicy.Expanding,
+                                        QtWidgets.QSizePolicy.Expanding)
+        self.output_vbox = QtWidgets.QVBoxLayout()
+        self.output_frame.setLayout(self.output_vbox)
+
+        self.output_figure_layout = QtWidgets.QVBoxLayout()
+        self.output_figure_layout.addStretch()
+        output_group_box = QtWidgets.QGroupBox()
+        output_group_box.setLayout(self.output_figure_layout)
+
+
+        self.output_scroll = QtWidgets.QScrollArea()
+        self.output_scroll.setWidget(output_group_box)
+        self.output_scroll.setWidgetResizable(True)
+        self.output_scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.output_scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+
+
+        self.output_vbox.addWidget(self.output_scroll)
+
+        self.main_layout.addWidget(self.output_frame)
+
 
     def show_documentation(self):
         pass
@@ -364,6 +555,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 app = QtWidgets.QApplication(sys.argv)
 
 appWindow = ApplicationWindow()
-appWindow.show()
+appWindow.showMaximized()
 sys.exit(app.exec_())
 

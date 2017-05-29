@@ -8,13 +8,13 @@ from collections import namedtuple
 import matplotlib
 matplotlib.use('Qt5Agg')
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+# from mpl_toolkits.mplot3d import Axes3D
 from PyQt5 import QtCore, QtWidgets, QtGui
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotCanvas import ScatterCanvas
-from intersectionElements import Light, Circle, Sphere
+from intersectionElements import Light, Circle
 from intersectionDrawer import drawer
-from pygameVector import Vec3d, Vec2d
+from pygameVector import Vec2d
 
 
 class MyNavigationToolbar(NavigationToolbar):
@@ -202,9 +202,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.delete_line.setMaximum(self.tableWidget.rowCount())
         self.delete_line.setMinimum(self.tableWidget.rowCount())
 
-        self.output_figure.clear()
-        self.output_canvas.updateGeometry()
-
     def addCanvas(self, canvas):
         # plotting area
         self.canvas_frame = QtWidgets.QFrame()
@@ -235,10 +232,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.box_waveLength.setValue(532)
         self.box_lightNum.setDecimals(0)
         self.box_lightNum.setMaximum(2000)
-        self.box_lightNum.setValue(1)
+        self.box_lightNum.setValue(3)
         self.box_lightNum.setEnabled(False)
         self.box_times.setDecimals(0)
         self.box_times.setValue(3)
+        self.box_times.setMaximum(20)
 
         for row, widgets in enumerate(zip(labels, boxes)):
             for column, (label, box) in enumerate(zip(*widgets)):
@@ -277,8 +275,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.file_menu = QtWidgets.QMenu('&File', self)
         self.file_menu.addAction('&New', self.fileNew, 
                                  QtCore.Qt.CTRL + QtCore.Qt.Key_N)
-        self.file_menu.addAction('&Open', self.fileOpen,
-                                 QtCore.Qt.CTRL + QtCore.Qt.Key_O)
+        # self.file_menu.addAction('&Open', self.fileOpen,
+                                 # QtCore.Qt.CTRL + QtCore.Qt.Key_O)
         self.file_menu.addAction('Save Data', self.fileSave,
                                  QtCore.Qt.CTRL + QtCore.Qt.SHIFT + QtCore.Qt.Key_S)
         self.file_menu.addAction('&Save Image', self.imageSave,
@@ -297,36 +295,35 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # refresh the User Interface
         self.clearData()
 
-    def fileOpen(self):
-        # open exsiting data file
-        self.data = {'start_point':[], 'vector':[]}
-        files_types = "CSV data files (*.csv)"
-        fileDialog = QtWidgets.QFileDialog()
-        fileDialog.setAcceptMode(QtWidgets.QFileDialog.AcceptOpen)
-        filename, fil = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', os.path.expanduser('~'), files_types)
-        try:
-            with open(filename, 'r') as f:
-                f_csv = csv.reader(f)
-                header = next(f_csv)
-                Row = namedtuple('Row', header)
-                for r in f_csv:
-                    row = Row(*r)
-                    self.data['start_point'].append(row.start_point)
-                    self.data['vector'].append(row.vector)
-        except FileNotFoundError:
-            self.statusBar().showMessage('open operation abort.')
-        except Exception as e:
-            self.statusBar().showMessage('file {0} is not a correct format file.'.format(filename))
-            print (e)
-        else:
-            self.tableWidget.setRowCount(len(self.data['start_point'])+1)
-            i = 0
-            for p, v in zip(self.data['start_point'], self.data['vector']):
-                self.tableWidget.setItem(i+1, 0, QtWidgets.QTableWidgetItem(str(p)))
-                self.tableWidget.setItem(i+1, 1, QtWidgets.QTableWidgetItem(str(v)))
-                i += 1
-            self.delete_line.setMaximum(self.tableWidget.rowCount())
-            self.delete_line.setMinimum(1)
+    # def fileOpen(self):
+    #     self.data = {'start_point':[], 'vector':[]}
+    #     files_types = "CSV data files (*.csv)"
+    #     fileDialog = QtWidgets.QFileDialog()
+    #     fileDialog.setAcceptMode(QtWidgets.QFileDialog.AcceptOpen)
+    #     filename, fil = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', os.path.expanduser('~'), files_types)
+    #     try:
+    #         with open(filename, 'r') as f:
+    #             f_csv = csv.reader(f)
+    #             header = next(f_csv)
+    #             Row = namedtuple('Row', header)
+    #             for r in f_csv:
+    #                 row = Row(*r)
+    #                 self.data['start_point'].append(row.start_point)
+    #                 self.data['vector'].append(row.vector)
+    #     except FileNotFoundError:
+    #         self.statusBar().showMessage('open operation abort.')
+    #     except Exception as e:
+    #         self.statusBar().showMessage('file {0} is not a correct format file.'.format(filename))
+    #         print (e)
+    #     else:
+    #         self.tableWidget.setRowCount(len(self.data['start_point'])+1)
+    #         i = 0
+    #         for p, v in zip(self.data['start_point'], self.data['vector']):
+    #             self.tableWidget.setItem(i+1, 0, QtWidgets.QTableWidgetItem(str(p)))
+    #             self.tableWidget.setItem(i+1, 1, QtWidgets.QTableWidgetItem(str(v)))
+    #             i += 1
+    #         self.delete_line.setMaximum(self.tableWidget.rowCount())
+    #         self.delete_line.setMinimum(1)
 
     def fileSave(self):
         # save data to file
@@ -336,7 +333,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         data = self.angle_y
         result = []
         for i, angle in enumerate(data):
-            angle.insert(0, i)
+            angle.insert(0, i+1)
             result.append(angle)
         files_types = "CSV data files (*.csv)"
         fileDialog = QtWidgets.QFileDialog()
@@ -358,14 +355,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
     def imageSave(self):
         # save the simulation result
-        image_types = "Image File (*.png *jpg)"
-        fileDialog = QtWidgets.QFileDialog()
-        fileDialog.setAcceptMode(QtWidgets.QFileDialog.AcceptSave)
-        filename, fil = QtWidgets.QFileDialog.getSaveFileName(self, 'Save file', os.path.expanduser('~'), image_types)
         try:
-            self.fig_toolbar.save_figure(filename)
+            self.fig_toolbar.save_figure()
         except Exception as e:
-            print (e)
             self.statusBar().showMessage('Image not save Exception:%s' % e)
 
     def simulate_2d(self):
@@ -383,13 +375,14 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         circle = Circle(radius)
         circle_patch = plt.Circle((0,0), radius, fill=False)
 
+        x = []
+        y = []
         if_continuous = True if 'Continuous' == self.comboBox.currentText() else False
         if not if_continuous:
             points_and_lines = []
             start_points = self.data['start_point']
             directions = self.data['vector']
             for p, v in zip(start_points, directions):
-                # TODO: convert string to float
                 v = (float(v[0]), float(v[1]))
                 light = Light(waveLength, Vec2d(v).normalized(), 1, unit='nm')
                 points_and_lines.append(drawer(circle, light, refraction_index, intersection_time=times, start_point=p))
@@ -440,8 +433,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         ax.axis('equal')
         boarder = radius+3
         ax.axis([-boarder, boarder, -boarder, boarder])
-        for l in lines:
-            ax.add_line(l)
+        if lines:
+            for l in lines:
+                ax.add_line(l)
         self.canvas_2d.draw()
 
     def addOutputArea(self):
