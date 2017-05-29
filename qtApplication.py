@@ -32,6 +32,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.data = {'start_point':[], 'vector':[]}
 
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)   #  Make Qt delete this widget when widget accept close event
+        app_icon = QtGui.QIcon()
+        app_icon.addFile('icon.png', QtCore.QSize(124, 124))
+        app.setWindowIcon(app_icon)
         self.setWindowTitle('球形粒子几何光学追迹')
 
         self.if_3d = False

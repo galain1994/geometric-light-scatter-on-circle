@@ -555,7 +555,7 @@
 			"file": "matplotCanvas.py",
 			"settings":
 			{
-				"buffer_size": 1296,
+				"buffer_size": 1408,
 				"line_ending": "Windows"
 			}
 		},
@@ -563,7 +563,15 @@
 			"file": "drawer3d.py",
 			"settings":
 			{
-				"buffer_size": 12571,
+				"buffer_size": 14113,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "qtApplication3D.py",
+			"settings":
+			{
+				"buffer_size": 23822,
 				"line_ending": "Windows"
 			}
 		},
@@ -579,7 +587,7 @@
 			"file": "intersectionDrawer.py",
 			"settings":
 			{
-				"buffer_size": 8581,
+				"buffer_size": 8826,
 				"line_ending": "Windows"
 			}
 		},
@@ -587,7 +595,7 @@
 			"file": "qtApplication.py",
 			"settings":
 			{
-				"buffer_size": 16881,
+				"buffer_size": 19549,
 				"line_ending": "Windows"
 			}
 		}
@@ -977,7 +985,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 6,
 			"sheets":
 			[
 				{
@@ -1110,7 +1118,7 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1296,
+						"buffer_size": 1408,
 						"regions":
 						{
 						},
@@ -1139,15 +1147,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 12571,
+						"buffer_size": 14113,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								9948,
-								9948
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1159,13 +1167,40 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3390.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 6,
+					"file": "qtApplication3D.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 23822,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 8391.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
 					"file": "geometric.sublime-project",
 					"semi_transient": false,
 					"settings":
@@ -1195,12 +1230,12 @@
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 8,
 					"file": "intersectionDrawer.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8581,
+						"buffer_size": 8826,
 						"regions":
 						{
 						},
@@ -1226,12 +1261,12 @@
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 9,
 					"file": "qtApplication.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 16881,
+						"buffer_size": 19549,
 						"regions":
 						{
 						},
@@ -1251,7 +1286,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2370.0,
+						"translation.y": 4449.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

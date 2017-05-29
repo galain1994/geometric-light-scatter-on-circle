@@ -32,6 +32,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.data = {'start_point':[], 'vector':[]}
 
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)   #  Make Qt delete this widget when widget accept close event
+        app_icon = QtGui.QIcon()
+        app_icon.addFile('icon.png', QtCore.QSize(124, 124))
+        app.setWindowIcon(app_icon)
         self.setWindowTitle('3D球粒子几何光学追迹')
 
         self.elevation_angle = None
@@ -539,7 +542,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.output_scroll.setWidget(output_group_box)
         self.output_scroll.setWidgetResizable(True)
         self.output_scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        self.output_scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.output_scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
 
 
         self.output_vbox.addWidget(self.output_scroll)
