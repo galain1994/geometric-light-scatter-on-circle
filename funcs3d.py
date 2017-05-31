@@ -6,8 +6,13 @@ from numpy import matrix
 from pygameVector import Vec3d
 from intersectionElements import Light, Sphere
 
-__all__ = ['generate_start_points', 'calculate_intersection_on_sphere',
+__all__ = [ 'calculate_elevation_angle','generate_start_points', 'calculate_intersection_on_sphere',
             'reflection', 'refraction', 'ref_factors']
+
+
+def calculate_elevation_angle(vector):
+    kx, ky, kz = vector
+    return math.degrees(math.atan2(kz, math.sqrt(kx*kx+ky*ky)))
 
 
 def generate_start_points(radius, y, amount, tol=1e-2):

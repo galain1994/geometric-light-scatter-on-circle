@@ -47,11 +47,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.main_widget.setSizePolicy(QtWidgets.QSizePolicy.Expanding,
                                        QtWidgets.QSizePolicy.Expanding)
 
-        self.addDataArea(radius=10)
+        self.addDataArea()
 
         self.statusBar()
 
-        self.canvas_2d = ScatterCanvas(self.main_widget, 6, 4)
+        self.canvas_2d = ScatterCanvas(self.main_widget, 8, 8)
         self.addCanvas(self.canvas_2d)
 
         self.addOutputArea()
@@ -60,7 +60,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.main_widget.setFocus()
         self.setCentralWidget(self.main_widget)
 
-    def addDataArea(self, radius):
+    def addDataArea(self):
         if_3d = self.if_3d
 
         self.data_frame = QtWidgets.QFrame()
@@ -101,15 +101,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         coordinates.setAlignment(QtCore.Qt.AlignLeft)
         input_form.addRow('Start Point:  ', coordinates)
         lx, ly = QtWidgets.QLabel('x:   '), QtWidgets.QLabel('y:   ')
-        x, y = [QtWidgets.QDoubleSpinBox() for i in range(2)]
-        self.co = (x, y)
-        for _co in self.co:
-            _co.setSingleStep(0.1)
-            _co.setMinimum(-radius)
-            _co.setMaximum(radius-0.01)
-        x.setValue(1)
-        x.setMaximum(-radius-1)
-        x.setMinimum(-2*radius)
+        self.startpoint_x, self.startpoint_y = [QtWidgets.QSpinBox() for i in range(2)]
+        self.startpoint_x.setRange(-10000, 10000)
+        self.startpoint_y.setRange(-10000, 10000)
+        self.co = (self.startpoint_x, self.startpoint_y)
+        self.startpoint_x.setValue(-1.5*1000)
+        self.startpoint_x.setEnabled(False)
         label = (lx, ly)
         for _co, _label in zip(self.co, label):
             coordinates.addWidget(_label)
@@ -125,9 +122,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         vx.setValue(1)
         self.v = (vx, vy)
         lv = (lvx, lvy)
-        for _v in self.v:
-            _v.setSingleStep(0.1)
-            _v.setMinimum(-radius)
         for _v, _lv in zip(self.v, lv):
             direction_layout.addWidget(_lv)
             direction_layout.addWidget(_v)
@@ -169,7 +163,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.mod_form.addRow('Line:', h)
 
     def addData(self):
-        start_point = tuple(round(_co.value(), 5) for _co in self.co)
+        start_point = tuple(round(_co.value()/1000, 5) for _co in self.co)
         vector = tuple(round(_v.value(), 5) for _v in self.v)
         for (p, v) in zip(self.data['start_point'], self.data['vector']):
             if start_point == p and vector == v:
@@ -220,7 +214,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.light_attribute_form = QtWidgets.QGridLayout()
 
         lable_m, label_radius, label_waveLength, label_lightNum, label_times = QtWidgets.QLabel('m (refraction index):'), \
-                    QtWidgets.QLabel('Radius (mm):'), QtWidgets.QLabel('Wave Length (nm):'), \
+                    QtWidgets.QLabel('Radius (um):'), QtWidgets.QLabel('Wave Length (nm):'), \
                     QtWidgets.QLabel('Light Nums:'), QtWidgets.QLabel('times:')
         self.box_m, self.box_radius, self.box_waveLength, self.box_lightNum, self.box_times = [QtWidgets.QDoubleSpinBox() for i in range(5)]
         labels = [[label_radius], [lable_m, label_waveLength], [label_lightNum, label_times]]
@@ -229,7 +223,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.box_m.setDecimals(4)
         self.box_m.setValue(1.335)
         self.box_radius.setDecimals(2)
-        self.box_radius.setValue(10)
+        self.box_radius.setRange(0, 10000)
+        self.box_radius.setValue(1000)
+        self.box_radius.valueChanged.connect(self.change_radius)
         self.box_waveLength.setDecimals(2)
         self.box_waveLength.setMaximum(1000)
         self.box_waveLength.setValue(532)
@@ -256,6 +252,17 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.canvas_layout.addWidget(canvas)
         self.canvas_layout.addStretch()
         self.canvas_layout.addWidget(self.fig_toolbar)
+
+        self.copyright_frame = QtWidgets.QFrame()
+        self.copyright_layout = QtWidgets.QHBoxLayout()
+        self.copyright_layout.setAlignment(QtCore.Qt.AlignRight)
+        _empty_label = QtWidgets.QLabel()
+        self.copyright_label = QtWidgets.QLabel('西电韩香娥团队所有 \u00a9 Coder:陈嘉琅')
+        self.copyright_label.setFont(QtGui.QFont('Times', 12))
+        self.copyright_layout.addWidget(_empty_label)
+        self.copyright_layout.addWidget(self.copyright_label)
+        self.copyright_frame.setLayout(self.copyright_layout)
+        self.canvas_layout.addWidget(self.copyright_frame)
 
         self.main_layout.addWidget(self.canvas_frame)
 
@@ -369,7 +376,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         ax.clear()
         self.canvas_2d.draw()
 
-        radius = float(self.box_radius.value())
+        radius = float(self.box_radius.value())/1000
         lightNum = int(self.box_lightNum.value())
         waveLength = float(self.box_waveLength.value())
         times = int(self.box_times.value())
@@ -431,14 +438,15 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 self.output_figure_layout.addWidget(_canvas)
             self.output_scroll.updateGeometry()
 
-        ax.scatter(x, y)
+        s = [8] * len(x)
+        ax.scatter(x, y, s=s)
         ax.add_patch(circle_patch)
         ax.axis('equal')
-        boarder = radius+3
-        ax.axis([-boarder, boarder, -boarder, boarder])
         if lines:
             for l in lines:
                 ax.add_line(l)
+        boarder = 2*radius
+        ax.axis([-boarder, boarder, -boarder, boarder])
         self.canvas_2d.draw()
 
     def addOutputArea(self):
@@ -468,6 +476,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # self.output_vbox.addWidget(self.output_list)
 
         self.main_layout.addWidget(self.output_frame)
+
+    def change_radius(self):
+        radius = float(self.box_radius.value())
+        self.startpoint_x.setValue(-1.5*radius)
+        self.startpoint_y.setRange(-radius+1, radius-1)
 
 
     def show_documentation(self):

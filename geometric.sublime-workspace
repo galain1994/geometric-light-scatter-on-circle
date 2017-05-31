@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"Qt",
+				"QtCore"
+			],
+			[
+				"app",
+				"app_icon"
+			],
+			[
 				"po",
 				"points_and_lines_and_lights"
 			],
@@ -180,10 +188,6 @@
 				"addWidget"
 			],
 			[
-				"Qt",
-				"QtWidgets"
-			],
-			[
 				"file",
 				"fileDialog"
 			],
@@ -206,10 +210,6 @@
 			[
 				"star_",
 				"start_point"
-			],
-			[
-				"app",
-				"append"
 			],
 			[
 				"fil",
@@ -520,14 +520,6 @@
 	"buffers":
 	[
 		{
-			"file": "embed_test.py",
-			"settings":
-			{
-				"buffer_size": 4468,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "funcs3d.py",
 			"settings":
 			{
@@ -571,7 +563,7 @@
 			"file": "qtApplication3D.py",
 			"settings":
 			{
-				"buffer_size": 23822,
+				"buffer_size": 23951,
 				"line_ending": "Windows"
 			}
 		},
@@ -595,7 +587,7 @@
 			"file": "qtApplication.py",
 			"settings":
 			{
-				"buffer_size": 19549,
+				"buffer_size": 19679,
 				"line_ending": "Windows"
 			}
 		}
@@ -687,6 +679,8 @@
 	},
 	"file_history":
 	[
+		"/E/PythonProject/geometric-light-scatter-on-circle/embed_test.py",
+		"/E/PythonProject/geometric-light-scatter-on-circle/plotting_many_lines.py",
 		"/Users/CsMac/Code/sublime/project_venv_repls.py",
 		"/E/PythonProject/geometric-light-scatter-on-circle/typeChecker.py",
 		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/intersectionFuncs.py",
@@ -812,9 +806,7 @@
 		"/Users/CsMac/Downloads/mongodb-osx-x86_64-3.2.10/local/lib/python2.7/site-packages/pymongo/__init__.py",
 		"/Users/CsMac/Work/example/selection_histogram.py",
 		"/Users/CsMac/Work/line.html",
-		"/Users/CsMac/Work/code/parameters.py",
-		"/Users/CsMac/Work/code/colorectal_datacollection_new.csv",
-		"/Users/CsMac/Downloads/get-pip.py"
+		"/Users/CsMac/Work/code/parameters.py"
 	],
 	"find":
 	{
@@ -985,42 +977,11 @@
 	"groups":
 	[
 		{
-			"selected": 6,
+			"selected": 4,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "embed_test.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4468,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"encoding_helper_encoding": "cp936",
-							"origin_encoding": "ASCII",
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1475.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
 					"file": "funcs3d.py",
 					"semi_transient": false,
 					"settings":
@@ -1051,7 +1012,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 1,
 					"file": "intersectionFuncs.py",
 					"semi_transient": false,
 					"settings":
@@ -1063,8 +1024,8 @@
 						"selection":
 						[
 							[
-								0,
-								0
+								2269,
+								2269
 							]
 						],
 						"settings":
@@ -1076,13 +1037,13 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 240.0,
+						"translation.y": 672.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 2,
 					"file": "intersectionElements.py",
 					"semi_transient": false,
 					"settings":
@@ -1113,7 +1074,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 3,
 					"file": "matplotCanvas.py",
 					"semi_transient": false,
 					"settings":
@@ -1142,7 +1103,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 4,
 					"file": "drawer3d.py",
 					"semi_transient": false,
 					"settings":
@@ -1154,8 +1115,8 @@
 						"selection":
 						[
 							[
-								0,
-								0
+								12145,
+								12145
 							]
 						],
 						"settings":
@@ -1167,40 +1128,41 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 4464.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 5,
 					"file": "qtApplication3D.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 23822,
+						"buffer_size": 23951,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								23664,
+								23664
 							]
 						],
 						"settings":
 						{
+							"encoding_helper_encoding": "UTF-8",
 							"syntax": "Packages/Python/Python.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 8391.0,
+						"translation.y": 284.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 6,
 					"file": "geometric.sublime-project",
 					"semi_transient": false,
 					"settings":
@@ -1230,7 +1192,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 7,
 					"file": "intersectionDrawer.py",
 					"semi_transient": false,
 					"settings":
@@ -1255,26 +1217,26 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 96.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 8,
 					"file": "qtApplication.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 19549,
+						"buffer_size": 19679,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								1127,
+								1127
 							]
 						],
 						"settings":
@@ -1286,7 +1248,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4449.0,
+						"translation.y": 106.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

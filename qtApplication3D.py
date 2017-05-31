@@ -4,6 +4,7 @@
 import os
 import sys
 import csv
+import math
 from collections import namedtuple
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -15,6 +16,7 @@ from matplotCanvas import ScatterCanvas, MplPlot3dCanvas
 from intersectionElements import Sphere, Light
 from pygameVector import Vec3d
 from drawer3d import drawer, multi_line_drawer, generate_multi_start_points, draw_sphere_at_axes
+from funcs3d import calculate_elevation_angle
 
 
 class MyNavigationToolbar(NavigationToolbar):
@@ -33,7 +35,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)   #  Make Qt delete this widget when widget accept close event
         app_icon = QtGui.QIcon()
-        app_icon.addFile('icon.png', QtCore.QSize(124, 124))
+        app_icon.addFile('E:\\PythonProject\\geometric-light-scatter-on-circle\\icon.png', QtCore.QSize(124, 124))
         app.setWindowIcon(app_icon)
         self.setWindowTitle('3D球粒子几何光学追迹')
 
@@ -44,11 +46,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.main_widget = QtWidgets.QWidget(self)
         self.main_layout = QtWidgets.QHBoxLayout(self.main_widget)
 
-        self.addDataArea(radius=10)
+        self.addDataArea()
 
         self.statusBar()
 
-        self.canvas_3d = MplPlot3dCanvas(self.main_widget)
+        self.canvas_3d = MplPlot3dCanvas(self.main_widget, 8, 8)
         self.addCanvas(self.canvas_3d)
         self.canvas_3d.axes.mouse_init()            # 初始化鼠标的操作
 
@@ -58,7 +60,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.main_widget.setFocus()
         self.setCentralWidget(self.main_widget)
 
-    def addDataArea(self, radius):
+    def addDataArea(self):
 
         self.data_frame = QtWidgets.QFrame()
         self.data_frame.setMaximumWidth(500)
@@ -92,21 +94,18 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         input_form.setAlignment(QtCore.Qt.AlignLeft)
         coordinates = QtWidgets.QHBoxLayout()
         coordinates.setAlignment(QtCore.Qt.AlignLeft)
-        input_form.addRow('Start Point:  ', coordinates)
+        input_form.addRow('Start Point:(um)', coordinates)
         lx, ly, lz = QtWidgets.QLabel('x:   '), QtWidgets.QLabel('y:   '), QtWidgets.QLabel('z:')
-        x, y, z = [QtWidgets.QDoubleSpinBox() for i in range(3)]
-        self.co = (x, y, z)
-        for _co in self.co:
-            _co.setSingleStep(0.1)
-            _co.setMinimum(-radius)
-            _co.setMaximum(radius-0.01)
-        y.setValue(1)
-        y.setMaximum(-radius-1)
-        y.setMinimum(-2*radius)
+        self.start_x, y, self.start_z = [QtWidgets.QSpinBox() for i in range(3)]
+        self.co = (self.start_x, y, self.start_z)
         label = (lx, ly, lz)
         for _co, _label in zip(self.co, label):
+            _co.setRange(-999, 999)
             coordinates.addWidget(_label)
             coordinates.addWidget(_co)
+        y.setRange(-2000, -1000)
+        y.setValue(-1500)
+        y.setEnabled(False)
 
         # direction
         direction_layout = QtWidgets.QHBoxLayout()
@@ -118,9 +117,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         vy.setValue(1)
         self.v = (vx, vy, vz)
         lv = (lvx, lvy, lvz)
-        for _v in self.v:
-            _v.setSingleStep(0.1)
-            _v.setMinimum(-radius)
         for _v, _lv in zip(self.v, lv):
             direction_layout.addWidget(_lv)
             direction_layout.addWidget(_v)
@@ -161,7 +157,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.mod_form.addRow('Line:', h)
 
     def addData(self):
-        start_point = tuple(round(_co.value(), 5) for _co in self.co)
+        start_point = tuple(round(_co.value()/1000, 5) for _co in self.co)
         vector = tuple(round(_v.value(), 5) for _v in self.v)
         for (p, v) in zip(self.data['start_point'], self.data['vector']):
             if start_point == p and vector == v:
@@ -213,7 +209,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.light_attribute_form = QtWidgets.QGridLayout()
 
         lable_m, label_radius, label_waveLength, label_lightNum, label_times = QtWidgets.QLabel('m (refraction index):'), \
-                    QtWidgets.QLabel('Radius (mm):'), QtWidgets.QLabel('Wave Length (nm):'), \
+                    QtWidgets.QLabel('Radius (um):'), QtWidgets.QLabel('Wave Length (nm):'), \
                     QtWidgets.QLabel('Light Nums:'), QtWidgets.QLabel('times:')
         self.box_m, self.box_radius, self.box_waveLength, self.box_lightNum, self.box_times = [QtWidgets.QDoubleSpinBox() for i in range(5)]
         labels = [[label_radius], [lable_m, label_waveLength], [label_lightNum, label_times]]
@@ -222,7 +218,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.box_m.setDecimals(4)
         self.box_m.setValue(1.335)
         self.box_radius.setDecimals(2)
-        self.box_radius.setValue(10)
+        self.box_radius.setRange(0, 10000)
+        self.box_radius.setValue(1000)
+        self.box_radius.valueChanged.connect(self.change_radius)
         self.box_waveLength.setDecimals(2)
         self.box_waveLength.setMaximum(1000)
         self.box_waveLength.setValue(532)
@@ -254,11 +252,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             _check.setMaximumWidth(50)
             _check.setChecked(False)
             _check.stateChanged.connect(self.checkbox_changed)
-        self.set_x, self.set_y, self.set_z = [QtWidgets.QDoubleSpinBox() for i in range (3)]
-        self.set_y.setRange(-20, -10)
-        self.set_y.setValue(-15.0)
+        self.set_x, self.set_y, self.set_z = [QtWidgets.QSpinBox() for i in range (3)]
+        self.set_y.setRange(-10000, 10000)
+        self.set_y.setEnabled(False)
+        self.set_y.setValue(-1500)
         self.co_settings = [self.set_x, self.set_z]
         for _set in self.co_settings:
+            _set.setRange(-998, 998)
             _set.setEnabled(False)
 
         self.set_coordinate_form.addWidget(self.check_y)
@@ -280,6 +280,17 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.canvas_layout.addWidget(self.fig_toolbar)
         self.fig_toolbar.hide()
 
+        self.copyright_frame = QtWidgets.QFrame()
+        self.copyright_layout = QtWidgets.QHBoxLayout()
+        self.copyright_layout.setAlignment(QtCore.Qt.AlignRight)
+        _empty_label = QtWidgets.QLabel()
+        self.copyright_label = QtWidgets.QLabel('西电韩香娥团队所有 \u00a9 Coder:陈嘉琅')
+        self.copyright_label.setFont(QtGui.QFont('Times', 12))
+        self.copyright_layout.addWidget(_empty_label)
+        self.copyright_layout.addWidget(self.copyright_label)
+        self.copyright_frame.setLayout(self.copyright_layout)
+        self.canvas_layout.addWidget(self.copyright_frame)
+
         self.main_layout.addWidget(self.canvas_frame)
 
     def checkbox_changed(self):
@@ -288,7 +299,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         for _check, _set in zip(self.co_checkbox, self.co_settings):
             if _check.isChecked():
                 _set.setEnabled(True)
-                _set.setRange(-radius, radius)
+                _set.setRange(-radius+1, radius-1)
             else:
                 _set.setEnabled(False)
 
@@ -427,7 +438,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         ax.clear()
         self.canvas_3d.draw()
 
-        radius = float(self.box_radius.value())
+        radius = float(self.box_radius.value())/1000
         lightNum = int(self.box_lightNum.value())
         waveLength = float(self.box_waveLength.value())
         times = int(self.box_times.value())
@@ -466,19 +477,21 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             co_settings = []
             for _check, _set in zip(self.co_checkbox, self.co_settings):
                 if _check.isChecked():
-                    co_settings.append(float(_set.value()))
+                    co_settings.append(float(_set.value())/1000)
                 else:
                     co_settings.append(None)
             v = Vec3d(0, 1, 0)
             light = Light(waveLength, v, 1, unit='nm')
             start_point_list = generate_multi_start_points(radius, lightNum, 
                                                            set_x=co_settings[0], 
-                                                           set_y=self.set_y.value(),
+                                                           set_y=self.set_y.value()/1000,
                                                            set_z=co_settings[1])
             points_and_lines_and_lights = multi_line_drawer(sphere, light, refraction_index, start_point_list, times)
             points = points_and_lines_and_lights['points']
-            lines = points_and_lines_and_lights['lines'].values()
-            lines = [p_line for type_lines in lines for time_lines in type_lines for p_line in time_lines]
+            lines = points_and_lines_and_lights['lines']['incident_lines']
+            lines.extend(points_and_lines_and_lights['lines']['reflection_lines'])
+            lines.extend(points_and_lines_and_lights['lines']['refraction_lines'])
+            lines = [p_line for time_lines in lines for p_line in time_lines]
             x, y, z = points
             lights = points_and_lines_and_lights['lights']['refraction_lights']
             lights[0] = points_and_lines_and_lights['lights']['reflection_lights'][0]
@@ -487,38 +500,43 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.azimuth = []
             for l in lights:
                 output_x.append(list(range(len(l))))
-                self.elevation_angle.append([ light.direction.get_angle_between(Vec3d(light.direction.x, light.direction.y, 0)) for light in l])  # 抬升角
-                self.azimuth.append([ Vec3d(light.direction.x, light.direction.y, 0).get_angle_between(Vec3d(1, 0, 0)) for light in l]) # 方位角
+                self.elevation_angle.append([ calculate_elevation_angle(light.direction) for light in l])  # 抬升角
+                self.azimuth.append([math.degrees(math.atan2(light.direction.x, light.direction.y)) for light in l]) # 方位角
             for i, (_ele, _azi) in enumerate(zip(self.elevation_angle, self.azimuth)):
                 _output_canvas_frame = QtWidgets.QFrame()
                 _output_canvas_hbox = QtWidgets.QHBoxLayout()
                 _output_canvas_frame.setLayout(_output_canvas_hbox)
-                _canvas1 = ScatterCanvas(width=1, height=1)
-                _canvas2 = ScatterCanvas(width=1, height=1)
+                _canvas1 = ScatterCanvas(width=0.5, height=0.5)
+                _canvas2 = ScatterCanvas(width=0.5, height=0.5)
                 ax2 = _canvas2.fig.axes[0]
                 ax1 = _canvas1.fig.axes[0]
-                ax1.scatter(output_x[i], _ele)
-                ax2.scatter(output_x[i], _azi)
+                s1 = [10]*len(_ele)
+                ax1.scatter(output_x[i], _ele, s=s1)
+                ax2.scatter(output_x[i], _azi, s=s1)
                 ax1.set_title('(%i time) elevation angle distribution' % (i+1))
                 ax2.set_title('(%i time) azimuth distribution' % (i+1))
                 ax1.set_ylabel('angle (degree)')
                 ax2.set_ylabel('angle (degree)')
                 ax1.set_xlabel('num of light')
                 ax2.set_xlabel('num of light')
-                _canvas1.setMinimumHeight(500)
-                _canvas2.setMinimumHeight(500)
-                _canvas1.setMinimumWidth(500)
-                _canvas2.setMinimumWidth(500)
+                _canvas1.setMinimumHeight(400)
+                _canvas2.setMinimumHeight(400)
+                _canvas1.setMaximumWidth(400)
+                _canvas2.setMaximumWidth(400)
                 _output_canvas_hbox.addWidget(_canvas1)
                 _output_canvas_hbox.addWidget(_canvas2)
                 self.output_figure_layout.addWidget(_output_canvas_frame)
 
-        ax.scatter(x, y, z)
-        boarder = radius + 3
-        ax.axis([-boarder, boarder, -boarder, boarder])
+        s = [8] * len(x)
+        ax.scatter(x, y, z, s=s)
         if lines:
             for l in lines:
                 ax.add_line(l)
+        boarder = 1.5*radius
+        ax.axis('equal')
+        ax.set_xlim(-boarder, boarder)
+        ax.set_ylim(-boarder, boarder)
+        ax.set_zlim(-boarder, boarder)
         ax.legend(loc='upper left', frameon=False)
         self.canvas_3d.draw()
 
@@ -526,7 +544,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def addOutputArea(self):
 
         self.output_frame = QtWidgets.QFrame()
-        self.output_frame.setMinimumWidth(500)
+        self.output_frame.setMinimumWidth(800)
         self.output_frame.setSizePolicy(QtWidgets.QSizePolicy.Expanding,
                                         QtWidgets.QSizePolicy.Expanding)
         self.output_vbox = QtWidgets.QVBoxLayout()
@@ -549,6 +567,14 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         self.main_layout.addWidget(self.output_frame)
 
+
+    def change_radius(self):
+        radius = float(self.box_radius.value())
+        self.set_y.setValue(-1.5*radius)
+        self.set_x.setRange(-radius+1, radius-1)
+        self.set_z.setRange(-radius+1, radius-1)
+        self.start_x.setRange(-radius+1, radius-1)
+        self.start_z.setRange(-radius+1, radius-1)
 
     def show_documentation(self):
         pass
