@@ -64,7 +64,7 @@ def ref_factors(sphere, light, intersection_point):
     # vector on the surface of the intersection
     unit_n_vector = Vec3d(tuple((intersection_point[i]-center[i])/radius for i in range(3))).normalized()
     unit_b_vector = (light.direction.cross(unit_n_vector)).normalized()
-    unit_t_vector = unit_b_vector.cross(unit_n_vector)
+    unit_t_vector = (unit_b_vector.cross(unit_n_vector)).normalized()
     c = matrix([unit_n_vector, unit_t_vector, unit_b_vector]).T
 
     k_normal = k_li_vector.dot(unit_n_vector)

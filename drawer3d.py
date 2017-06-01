@@ -79,6 +79,12 @@ def draw_sphere_at_axes(ax, radius, longitude, latitude, linewidth, color, alpha
 
 def draw_line(s, e, linestyle='dashed', color='b', linewidth=1.5, label=None):
     l = art3d.Line3D((s[0], e[0]), (s[1], e[1]), (s[2], e[2]), color=color, linewidth=linewidth, label=label)
+    x_data = np.ndarray(shape=(1, 2), buffer=np.array([float(s[0]), float(e[0])]), dtype=np.float64)
+    y_data = np.ndarray(shape=(1, 2), buffer=np.array([float(s[1]), float(e[1])]), dtype=np.float64)
+    z_data = np.ndarray(shape=(1, 2), buffer=np.array([float(s[2]), float(e[2])]), dtype=np.float64)
+    setattr(l, '_x', x_data)
+    setattr(l, '_y', y_data)
+    setattr(l, '_z', z_data)
     l.set_linestyle(linestyle)
     return l
 
@@ -221,7 +227,7 @@ def multi_line_drawer(sphere, incident_light, refraction_index, start_point_list
                                     for (factor, light) in zip(factors_list, incident_lights)]
             reflection_lights_main.append(reflection_lights)
             # 折射光，出射
-            refraction_lights = [refraction(factor, light, refraction_index)
+            refraction_lights = [refraction(factor, light, 1)
                                     for (factor, light) in zip(factors_list, incident_lights)]
             refraction_lights_main.append(refraction_lights)
 
@@ -258,8 +264,9 @@ def main():
     light = Light(532, v, 1, unit='nm')
     refraction_index = 1.335
 
-    set_z = 9.99
-    start_point_list1 = generate_multi_start_points(radius, 2000, set_y=-15, set_z=set_z)
+    set_z = 0
+    density = 2000
+    start_point_list1 = generate_multi_start_points(radius, density, set_y=-15, set_z=set_z)
     # start_point_list2 = generate_multi_start_points(radius, 5, set_y=-15)
 
     intersection_time = 4
@@ -272,12 +279,23 @@ def main():
 
     x = []
     y = []
+    annotate_x = []
+    annotate_y = []
     import matplotlib.pyplot as plt
     for l in lights:
         x.append(list(range(len(l))))
-        # y.append([ light.direction.get_angle_between(Vec3d(light.direction.x, light.direction.y, 0)) for light in l])  # 抬升角
-        y.append([ Vec3d(light.direction.x, light.direction.y, 0).get_angle_between(v) for light in l]) # 方位角
+        anno_x = [0, len(l)//2, len(l)-1]
+        annotate_x.append(anno_x)
+        elevation_angle = [ calculate_elevation_angle(light.direction) for light in l]
+        # y.append(elevation_angle)  # 抬升角
+        # annotate_y.append([elevation_angle[anno_x[0]], 
+        #                    elevation_angle[anno_x[1]], 
+        #                    elevation_angle[anno_x[2]]])
+        azimuth = [ math.degrees(math.atan2(light.direction.x, light.direction.y)) for light in l]
+        y.append(azimuth) # 方位角
 
+    for l in lights[2]:
+        print (l.direction.x, l.direction.y, l.direction.z)
 
 
     fig, axes = plt.subplots(2, 2)
@@ -289,18 +307,27 @@ def main():
     axes[1][0].set_title('N=3')
     axes[1][1].scatter(x[3], y[3])
     axes[1][1].set_title('N=4')
+
+    # offset = 0
+    # for row_axes in axes:
+    #     for ax in row_axes:
+    #         for anno_x, anno_y in zip(annotate_x[offset], annotate_y[offset]):
+    #             ax.annotate("%i, %s°" % (int(anno_x), str(round(anno_y, 2))), (anno_x, anno_y))
+    #         offset += 1
+    
+        
     for ax in axes[1]:
         ax.set_xlabel('x')
     for col, ax in enumerate(axes[0]):
         ax.axis(sharex=axes[1][col])
-    # axes[0][0].set_ylabel('Lifting angle')
+    # axes[0][0].set_ylabel('Elevation angle')
     axes[0][0].set_ylabel('azimuth angle')
-    # axes[1][0].set_ylabel('Lifting angle')
+    # axes[1][0].set_ylabel('Elevation angle')
     axes[1][0].set_ylabel('azimuth angle')
     for row, ax in enumerate(axes):
         for col, row_ax in enumerate(ax):
             row_ax.axis(sharey=axes[row][0])
-    # plt.suptitle('Lifting angle (Z=%s)' % set_z)
+    # plt.suptitle('Elevation angle (Z=%s)' % set_z)
     plt.suptitle('Azimuth angle (Z=%s)' % set_z)
     plt.show()
 
@@ -333,31 +360,8 @@ def main():
     # ax.legend(loc='upper left', frameon=False)
     # plt.show()
 
-def test():
-    radius = 10
-    sphere = Sphere(radius, (0, 0, 0))
-
-    v = Vec3d(0, 1, 0)
-    light = Light(532, v, 1, unit='nm')
-    refraction_index = 1.335
-
-    set_z = 9.99
-    start_point_list1 = generate_multi_start_points(radius, 2000, set_y=-15, set_z=set_z)
-    # start_point_list2 = generate_multi_start_points(radius, 5, set_y=-15)
-
-    intersection_time = 4
-    points_and_lines_and_lights = multi_line_drawer(sphere, light, refraction_index, start_point_list1, intersection_time)
-    lines1 = points_and_lines_and_lights['lines']['refraction_lines']
-    lines2 = points_and_lines_and_lights['lines']['reflection_lines']
-    # in_lines = points_and_lines_and_lights['lines']['incident_lines']
-    lines1.extend(lines2)
-    # lines1.extend(in_lines)
-    lines = [l for i in lines1 for l in i]
-    print (len(lines))
-    print (len(lines1))
-    print (len(lines2))
 
 if __name__ == '__main__':
-    test()
+    main()
     
 

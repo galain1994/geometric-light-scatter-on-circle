@@ -157,7 +157,7 @@ def main():
     radius = 10
     center = (0, 0)
     circle = Circle(radius, center)
-    density = 20
+    density = 2000
     vector = Vec2d(1, 0).normalized()
     incident_light = Light(532, vector, 1, unit='nm')
     refraction_index = 1.335
@@ -173,6 +173,9 @@ def main():
     for l in lights:
         y.append([light.direction.angle for light in l])
 
+    for l in lights[2]:
+        print (l.direction.x, l.direction.y)
+
     fig, axes = plt.subplots(2, 4)
     axes[0][0].scatter(x, y[0])
     axes[0][1].scatter(x, y[1])
@@ -183,7 +186,7 @@ def main():
     axes[1][2].scatter(x, y[6])
     axes[1][3].scatter(x, y[7])
     for i, a in enumerate([ i for j in axes for i in j]):
-        a.set_title('N = %s' % i)
+        a.set_title('N = %s' % str(i+1))
     plt.show()
 
     # x = range(density+1)
