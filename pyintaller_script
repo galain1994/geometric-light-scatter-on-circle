@@ -1,0 +1,1 @@
+pyinstaller -w -D -p E:\PythonProject\geometric-light-scatter-on-circle\venv\Lib\site-packages\PyQt5\Qt\bin scatter2D.py

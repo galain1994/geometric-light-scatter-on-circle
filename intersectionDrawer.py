@@ -20,18 +20,18 @@ COLORS = ['#FF0033', '#FF6600', '#FFFF33', '#33FF33',
           '#9e81d9', '#9202f5', '#01d9e1', '#00ff7f']
 
 
-def draw_linesegment(start_point, end_point, color):
+def draw_linesegment(start_point, end_point, color, linewidth=1.5):
     """draw line from to point coordinates
     画直线片段。传入起点坐标，终点坐标，颜色。
     颜色可以是十六进制，可以是颜色简写
     """
     x = (start_point[0], end_point[0])
     y = (start_point[1], end_point[1])
-    line = lines.Line2D(x, y, color=color)
+    line = lines.Line2D(x, y, color=color, linewidth=linewidth)
     return line
 
 
-def light_reflection_outside(circle, light, start_point, color='b', times=2):
+def light_reflection_outside(circle, light, start_point, color='b', times=2, linewidth=1.5):
     """outside the circle; the reflection 画圆外的反射的光线
     @circle: Circle的实例
     @light:  Light的实例
@@ -42,7 +42,7 @@ def light_reflection_outside(circle, light, start_point, color='b', times=2):
     vector = light.direction
     vectortimes = vector.normalized() * circle.radius * times
     end_point = (start_point[0] + vectortimes.x, start_point[1] + vectortimes.y)
-    line = draw_linesegment(start_point, end_point, color)
+    line = draw_linesegment(start_point, end_point, color, linewidth)
     return line
 
 

@@ -428,7 +428,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 self.angle_y.append([light.direction.angle for light in l])
             for i, _y in enumerate(self.angle_y):
                 _canvas = ScatterCanvas(width=3, height=5)   # size of each figure 
-                _canvas.axes.scatter(angle_x, _y)
+                s = [5] * len(angle_x)
+                _canvas.axes.scatter(angle_x, _y, s=s)
                 _canvas.axes.set_title('(%i time) Aimuth angle distribution' % (i+1))
                 _canvas.axes.set_ylabel('angle (degree)')
                 _canvas.axes.set_xlabel('num of light')
@@ -436,7 +437,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 self.output_figure_layout.addWidget(_canvas)
             self.output_scroll.updateGeometry()
 
-        s = [8] * len(x)    # 8表示点的大小 x表示有多少个点 所有点的大小都相等
+        s = [5] * len(x)    # 5表示点的大小 x表示有多少个点 所有点的大小都相等
         ax.scatter(x, y, s=s)
         ax.add_patch(circle_patch)
         ax.axis('equal')
