@@ -3,20 +3,23 @@
 
 from __future__ import division
 from math import pi
-from pygameVector import Vec2d, Vec3d
 
+__all__ = ['Circle', 'Light', 'Sphere']
 
 class Circle(object):
-    '''
+    """
     @param:radius float
-    @center_or_x
-    '''
+    @center_or_x: coordinates 圆心坐标的元组或x坐标
+    @center_y: 圆心y坐标
+    """
     def __init__(self, radius, center_or_x=(0,0), center_y=None):
         self.radius = radius
         if not center_y:
             self.center = center_or_x
         else:
             self.center = (center_or_x, center_y)
+        if self.center[0]*self.center[0] + self.center[1]*self.center[1] < radius*radius:
+            self.center = (0, 0)
 
     def on_circle(self, point, tol=1e-5):
         left = pow(point[0]-self.center[0], 2)+pow(point[1]-self.center[1], 2)
@@ -27,7 +30,13 @@ class Circle(object):
 
 
 class Light(object):
-
+    """
+    定义光线的类
+    @wavelength: 波长
+    @direction:  方向 Vec2d 或者 Vec3d
+    @refraction_index: 折射率
+    @unit: 单位可选 nm, um, mm, cm
+    """
     def __init__(self, wavelength, direction, refraction_index=1, unit='mm'):
         units = {'nm':1e-6, 'um':1e-3, 'mm':1, 'cm':1e3}
         if unit not in units.keys():
@@ -49,11 +58,14 @@ class Light(object):
         return k
 
 
-
 class Sphere(object):
-    '''
+    """
+    定义球的类
     @param:radius float
-    '''
+    @center_or_x:传入圆心x，y，z的元组或者x坐标
+    @center_y:圆心y坐标
+    @center_z:圆心z坐标
+    """
     def __init__(self, radius, center_or_x=(0, 0, 0), center_y=None, center_z=None):
         self.radius = radius
         if not center_y or center_z:
@@ -67,12 +79,6 @@ class Sphere(object):
             return True
         return False
 
-
-if __name__ == '__main__':
-    s = Sphere(10, (0, 0, 0))
-    point = (-10, 0, 0)
-
-    print (s.on_sphere(point))
 
 
 

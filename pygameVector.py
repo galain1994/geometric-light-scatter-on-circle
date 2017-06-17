@@ -729,3 +729,4 @@ class Vec3d(object):
         
     def __setstate__(self, dict):
         self.x, self.y, self.z = dict
+

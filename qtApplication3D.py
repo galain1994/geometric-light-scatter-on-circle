@@ -5,6 +5,7 @@ import os
 import sys
 import csv
 import math
+import webbrowser
 from collections import namedtuple
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -21,7 +22,7 @@ from funcs3d import calculate_elevation_angle
 
 class MyNavigationToolbar(NavigationToolbar):
 
-    # 去掉不需要的工具栏项目
+    # 去掉不需要的工具栏项目 有可能造成软件崩溃的设置
     toolitems =tuple(i for i in NavigationToolbar.toolitems
                             if i[0] not in ('Subplots', ))
 
@@ -35,12 +36,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)   #  Make Qt delete this widget when widget accept close event
         app_icon = QtGui.QIcon()
-        app_icon.addFile('E:\\PythonProject\\geometric-light-scatter-on-circle\\icon.png', QtCore.QSize(124, 124))
+        app_icon.addFile('./icon.png', QtCore.QSize(124, 124))
         app.setWindowIcon(app_icon)
         self.setWindowTitle('3D球粒子几何光学追迹')
 
-        self.elevation_angle = None
-        self.azimuth = None
+        self.elevation_angle = None # 抬升角数据
+        self.azimuth = None   # 方位角数据
         self.addMenu()
 
         self.main_widget = QtWidgets.QWidget(self)
@@ -89,7 +90,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         qbox.updateGeometry()
         self.data_layout.addWidget(scrollArea)
 
-        # coordinates
+        # coordinates 初始化坐标设置
         input_form = QtWidgets.QFormLayout()
         input_form.setAlignment(QtCore.Qt.AlignLeft)
         coordinates = QtWidgets.QHBoxLayout()
@@ -107,7 +108,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         y.setValue(-1500)
         y.setEnabled(False)
 
-        # direction
+        # direction 初始化向量设置
         direction_layout = QtWidgets.QHBoxLayout()
         direction_layout.setContentsMargins(-20, 0, 0, 0)
         direction_layout.setAlignment(QtCore.Qt.AlignLeft)
@@ -120,6 +121,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         for _v, _lv in zip(self.v, lv):
             direction_layout.addWidget(_lv)
             direction_layout.addWidget(_v)
+            _v.setEnabled(False)
 
         self.data_layout.addLayout(input_form)
 
@@ -294,6 +296,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.main_layout.addWidget(self.canvas_frame)
 
     def checkbox_changed(self):
+        """复选框改变时的动作
+        """
         radius = self.box_radius.value()
         self.set_y.setValue(-1.5*radius)
         for _check, _set in zip(self.co_checkbox, self.co_settings):
@@ -304,6 +308,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 _set.setEnabled(False)
 
     def selectionChange(self):
+        """选择不同入射光线的选项改变时
+        """
+        ax = self.canvas_3d.axes
+        ax.clear()
+        self.canvas_3d.draw()
         if "Continuous" == self.comboBox.currentText():
             self.data_frame.setHidden(True)
             self.data_layout.setEnabled(False)
@@ -321,13 +330,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.output_frame.setHidden(True)
 
     def addMenu(self):
-
-        # add file menu
+        # add file menu 增加菜单栏
         self.file_menu = QtWidgets.QMenu('&File', self)
         self.file_menu.addAction('&New', self.fileNew, 
                                  QtCore.Qt.CTRL + QtCore.Qt.Key_N)
-        # self.file_menu.addAction('&Open', self.fileOpen,
-                                 # QtCore.Qt.CTRL + QtCore.Qt.Key_O)
         self.file_menu.addAction('Save Elevation Angle', self.save_elevation_angle)
         self.file_menu.addAction('Save Azimuth', self.save_azimuth)
         self.file_menu.addAction('&Save Image', self.imageSave,
@@ -345,40 +351,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def fileNew(self):
         # refresh the User Interface
         self.clearData()
-
-    '''
-    def fileOpen(self):
-        self.data = {'start_point':[], 'vector':[]}
-        files_types = "CSV data files (*.csv)"
-        fileDialog = QtWidgets.QFileDialog()
-        fileDialog.setAcceptMode(QtWidgets.QFileDialog.AcceptOpen)
-        filename, fil = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', os.path.expanduser('~'), files_types)
-        try:
-            with open(filename, 'r') as f:
-                f_csv = csv.reader(f)
-                header = next(f_csv)
-                Row = namedtuple('Row', header)
-                for r in f_csv:
-                    row = Row(*r)
-                    self.data['start_point'].append(row.start_point)
-                    self.data['vector'].append(row.vector)
-        except FileNotFoundError:
-            self.statusBar().showMessage('open operation abort.')
-        except Exception as e:
-            self.statusBar().showMessage('file {0} is not a correct format file.'.format(filename))
-            print (e)
-        else:
-            self.tableWidget.setRowCount(len(self.data['start_point'])+1)
-            i = 0
-            for p, v in zip(self.data['start_point'], self.data['vector']):
-                self.tableWidget.setItem(i+1, 0, QtWidgets.QTableWidgetItem(str(p)))
-                self.tableWidget.setItem(i+1, 1, QtWidgets.QTableWidgetItem(str(v)))
-                i += 1
-            self.delete_line.setMaximum(self.tableWidget.rowCount())
-            self.delete_line.setMinimum(1)
-    '''
+        ax = self.canvas_3d.axes
+        ax.clear()
+        self.canvas_3d.draw()
 
     def save_elevation_angle(self):
+        """保存抬升角
+        """
         if not self.elevation_angle:
             self.statusBar().showMessage('No data simulated.')
             return
@@ -401,6 +380,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.statusBar().showMessage('data not save.')
 
     def save_azimuth(self):
+        """保存方位角
+        """
         if not self.azimuth:
             self.statusBar().showMessage('No data simulated.')
             return
@@ -459,9 +440,14 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             for p, v in zip(start_points, directions):
                 vector = Vec3d(float(v[0]), float(v[1]), float(v[2])).normalized()        # 光线方向且单位化
                 light = Light(waveLength, vector, 1, unit='nm')
-                points_and_lines.append(drawer(sphere, incident_light=light, 
-                                               refraction_index=refraction_index, 
-                                               start_point=p, intersection_time=times))
+                _p_and_l = drawer(sphere, incident_light=light, 
+                                  refraction_index=refraction_index, 
+                                  start_point=p, intersection_time=times)
+                if _p_and_l:
+                    points_and_lines.append(_p_and_l)
+            if not points_and_lines:
+                self.statusBar().showMessage('No intersection point exists')
+                return
             for p_l in points_and_lines:
                 for p in p_l['points']:
                     points.append(p)
@@ -471,6 +457,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             x, y, z = xyz if xyz else [[]]*3
 
         else:
+            # 移除原有的分布图
             for i in reversed(range(self.output_figure_layout.count())):
                 if self.output_figure_layout.itemAt(i).widget():
                     self.output_figure_layout.itemAt(i).widget().setParent(None)
@@ -487,6 +474,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                                                            set_y=self.set_y.value()/1000,
                                                            set_z=co_settings[1])
             points_and_lines_and_lights = multi_line_drawer(sphere, light, refraction_index, start_point_list, times)
+            if not points_and_lines_and_lights:
+                self.statusBar().showMessage('No intersection point exists')
+                return
             points = points_and_lines_and_lights['points']
             lines = points_and_lines_and_lights['lines']['incident_lines']
             lines.extend(points_and_lines_and_lights['lines']['reflection_lines'])
@@ -502,6 +492,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 output_x.append(list(range(len(l))))
                 self.elevation_angle.append([ calculate_elevation_angle(light.direction) for light in l])  # 抬升角
                 self.azimuth.append([math.degrees(math.atan2(light.direction.x, light.direction.y)) for light in l]) # 方位角
+            # 一张张分布图的增加 属性都想相同
             for i, (_ele, _azi) in enumerate(zip(self.elevation_angle, self.azimuth)):
                 _output_canvas_frame = QtWidgets.QFrame()
                 _output_canvas_hbox = QtWidgets.QHBoxLayout()
@@ -533,7 +524,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             for l in lines:
                 ax.add_line(l)
         boarder = 1.5*radius
-        ax.axis('equal')
+        # ax.axis('equal')
         ax.set_xlim(-boarder, boarder)
         ax.set_ylim(-boarder, boarder)
         ax.set_zlim(-boarder, boarder)
@@ -562,13 +553,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.output_scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.output_scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
 
-
         self.output_vbox.addWidget(self.output_scroll)
 
         self.main_layout.addWidget(self.output_frame)
 
-
     def change_radius(self):
+        """半径改变时 改变选项框的数值范围
+        """
         radius = float(self.box_radius.value())
         self.set_y.setValue(-1.5*radius)
         self.set_x.setRange(-radius+1, radius-1)
@@ -577,7 +568,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.start_z.setRange(-radius+1, radius-1)
 
     def show_documentation(self):
-        pass
+        webbrowser.open('https://github.com/GalaCastell/geometric-light-scatter-on-circle/wiki')
 
 
 
