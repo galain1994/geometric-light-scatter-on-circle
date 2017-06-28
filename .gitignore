@@ -91,3 +91,6 @@ ENV/
 # sublime project settings
 *.sublime-project
 *.sublime-workspace
+*.sublime-project
+
+*.sublime-workspace
