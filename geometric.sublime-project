@@ -2,14 +2,27 @@
 	"build_systems":
 	[
 		{
-			"shell_cmd": "E:\\PythonProject\\geometric-light-scatter-on-circle\\venv\\Scripts\\python"
+			"shell_cmd": "/Users/CsMac/Code/Algorithm_with_python/venv/bin/python"
 		}
 	],
 	"folders":
 	[
 		{
 			"path": "."
+		},
+		{
+			"path": "/Users/CsMac/Code/Algorithm_with_python"
+		},
+		{
+			"path": "/Users/CsMac/Code/CPP"
+		},
+		{
+			"path": "/Users/CsMac/Code/PythonPlayground"
 		}
 	],
-	"virtualenv": "E:\\PythonProject\\geometric-light-scatter-on-circle\\venv\\Scripts\\python"
+	"settings":
+	{
+		"python_interpreter": "/Users/CsMac/Code/Algorithm_with_python/venv/bin/python"
+	},
+	"virtualenv": "/Users/CsMac/Code/Algorithm_with_python/venv"
 }

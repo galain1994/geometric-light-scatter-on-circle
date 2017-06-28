@@ -4,120 +4,500 @@
 		"selected_items":
 		[
 			[
+				"fist",
+				"first_intersection_point_list"
+			],
+			[
+				"points",
+				"points_and_lines"
+			],
+			[
+				"sho",
+				"showMessage"
+			],
+			[
+				"sta",
+				"statusBar"
+			],
+			[
+				"po",
+				"points_and_lines"
+			],
+			[
+				"fir",
+				"first_intersection_point_list"
+			],
+			[
+				"dra",
+				"draw_elevation_angle_distribution"
+			],
+			[
+				"cal",
+				"calculate_azimuth"
+			],
+			[
 				"anno",
 				"anno_x"
 			],
 			[
-				"azimu",
-				"azimuth_angle"
+				"ca",
+				"calculate_elevation_angle"
 			],
 			[
-				"ano",
-				"anno_y"
+				"set",
+				"set_x"
 			],
 			[
-				"ann",
-				"anno_x"
-			],
-			[
-				"annota",
-				"annotate_x"
-			],
-			[
-				"setx",
-				"set_xlim"
-			],
-			[
-				"x",
-				"x_data"
-			],
-			[
-				"refra",
-				"refraction_line"
-			],
-			[
-				"start",
-				"start_x"
-			],
-			[
-				"inci",
-				"incident_lines"
-			],
-			[
-				"refl",
-				"reflection_line"
-			],
-			[
-				"refraction",
-				"refraction_lines"
-			],
-			[
-				"poin",
-				"points_and_lines_and_lights"
-			],
-			[
-				"set_",
-				"set_y"
-			],
-			[
-				"first_reflec",
-				"first_reflection_lines"
-			],
-			[
-				"fir",
-				"first_refraction_lights"
-			],
-			[
-				"co",
-				"color_offset"
-			],
-			[
-				"F",
-				"False"
-			],
-			[
-				"copy",
-				"copyright_layout"
+				"hor",
+				"horizon_or_vertical"
 			],
 			[
 				"Qt",
-				"QtWidgets"
+				"QtCore"
+			],
+			[
+				"copy",
+				"copyright_frame"
+			],
+			[
+				"保存",
+				"保存输出数据"
+			],
+			[
+				"fact",
+				"factors"
+			],
+			[
+				"inci",
+				"incident_light"
+			],
+			[
+				"ve",
+				"vector"
+			],
+			[
+				"in",
+				"incident_light"
+			],
+			[
+				"time",
+				"times"
+			],
+			[
+				"col",
+				"color"
+			],
+			[
+				"cen",
+				"center_y"
+			],
+			[
+				"Vec",
+				"Vec2d"
+			],
+			[
+				"center",
+				"center_y"
+			],
+			[
+				"fac",
+				"factors"
+			],
+			[
+				"vec",
+				"vector"
+			],
+			[
+				"intersection_points",
+				"intersection_points_1"
+			],
+			[
+				"value",
+				"valueChanged"
 			],
 			[
 				"star",
 				"startpoint_y"
 			],
 			[
-				"cal",
-				"calculate_elevation_angle"
+				"va",
+				"value"
+			],
+			[
+				"tan",
+				"tangential_vector_to_circle"
+			],
+			[
+				"v",
+				"vector1"
+			],
+			[
+				"re",
+				"return"
+			],
+			[
+				"setM",
+				"setMaximumWidth"
+			],
+			[
+				"save_",
+				"save_elevation_angle"
+			],
+			[
+				"ele",
+				"elevation_angle"
+			],
+			[
+				"ev",
+				"elevation_angle"
+			],
+			[
+				"fig",
+				"fig_toolbar"
+			],
+			[
+				"can",
+				"canvas_frame"
+			],
+			[
+				"_ou",
+				"_output_canvas_frame"
+			],
+			[
+				"_can",
+				"_canvas2"
+			],
+			[
+				"outpu_can",
+				"_output_canvas_hbox"
+			],
+			[
+				"output_can",
+				"_output_canvas_hbox"
+			],
+			[
+				"_out",
+				"_output_canvas_hbox"
+			],
+			[
+				"out",
+				"output_frame"
+			],
+			[
+				"setMi",
+				"setMinimumHeight"
+			],
+			[
+				"ou",
+				"output_x"
+			],
+			[
+				"app",
+				"appWindow"
+			],
+			[
+				"ref",
+				"refraction_index"
+			],
+			[
+				"mul",
+				"multi_line_drawer"
+			],
+			[
+				"poin",
+				"points_and_lines_and_lights"
+			],
+			[
+				"lin",
+				"lines"
+			],
+			[
+				"gen",
+				"generate_multi_start_points"
+			],
+			[
+				"set_",
+				"set_y"
+			],
+			[
+				"che",
+				"check_y"
 			],
 			[
 				"lig",
 				"light"
 			],
 			[
-				"app",
-				"append"
+				"point",
+				"points_and_lines"
 			],
 			[
-				"po",
-				"points_and_lines_and_lights"
+				"setMin",
+				"setMinimumSize"
 			],
 			[
-				"first",
-				"first_intersection_point"
+				"check",
+				"checkbox_changed"
 			],
 			[
-				"row",
-				"row_ax"
+				"set_co",
+				"set_coordinate_form"
 			],
 			[
-				"set",
-				"set_ylabel"
+				"canva",
+				"canvas_layout"
+			],
+			[
+				"add",
+				"addWidget"
+			],
+			[
+				"line",
+				"lines"
+			],
+			[
+				"pro",
+				"projection"
+			],
+			[
+				"pl",
+				"pl"
+			],
+			[
+				"refraction_in",
+				"refraction_index"
+			],
+			[
+				"inter",
+				"intersection_point"
+			],
+			[
+				"dir",
+				"direction"
+			],
+			[
+				"Ve",
+				"Vec3d"
+			],
+			[
+				"ske",
+				"skeleton"
+			],
+			[
+				"skel",
+				"skeletons"
+			],
+			[
+				"co",
+				"color"
+			],
+			[
+				"plo",
+				"plot_surface"
+			],
+			[
+				"la",
+				"latitude"
+			],
+			[
+				"ang",
+				"angle"
+			],
+			[
+				"result",
+				"result_data"
+			],
+			[
+				"outpt",
+				"output_figure_layout"
+			],
+			[
+				"addS",
+				"addStretch"
+			],
+			[
+				"Sc",
+				"ScrollBarAlwaysOn"
+			],
+			[
+				"outp",
+				"output_scroll"
+			],
+			[
+				"outpu",
+				"output_figure_layout"
+			],
+			[
+				"our",
+				"output_scroll"
+			],
+			[
+				"clea",
+				"clear"
+			],
+			[
+				"angle",
+				"angle_y"
+			],
+			[
+				"output_fi",
+				"output_figure_layout"
+			],
+			[
+				"oupu",
+				"output_scroll"
+			],
+			[
+				"main",
+				"main_widget"
+			],
+			[
+				"Ex",
+				"Expanding"
+			],
+			[
+				"Fi",
+				"Fixed"
+			],
+			[
+				"QT",
+				"QTableWidget"
+			],
+			[
+				"data",
+				"data_frame"
+			],
+			[
+				"canvas",
+				"canvas_frame"
+			],
+			[
+				"cna",
+				"canvas_3d"
+			],
+			[
+				"canvas_",
+				"canvas_3d"
+			],
+			[
+				"F",
+				"False"
+			],
+			[
+				"thre",
+				"threeCanvas"
+			],
+			[
+				"if",
+				"ifmain	if __name__ == '__main__'"
+			],
+			[
+				"__",
+				"__init__"
+			],
+			[
+				"axes",
+				"axes3d"
+			],
+			[
+				"lie",
+				"linewidth"
+			],
+			[
+				"fa",
+				"factors"
+			],
+			[
+				"interse",
+				"intersection_points_1"
+			],
+			[
+				"inciden",
+				"incident_light"
+			],
+			[
+				"li",
+				"light"
+			],
+			[
+				"refra",
+				"refraction_light"
+			],
+			[
+				"pla",
+				"plain_skeleton"
+			],
+			[
+				"colo",
+				"color_offset"
 			],
 			[
 				"st",
-				"step"
+				"start_point_list"
+			],
+			[
+				"refrac",
+				"refraction_line"
+			],
+			[
+				"reflction",
+				"reflection"
+			],
+			[
+				"start",
+				"start_point_list"
+			],
+			[
+				"reflctions",
+				"reflection_lights"
+			],
+			[
+				"refraction",
+				"refraction_lines"
+			],
+			[
+				"next",
+				"next_intersection_point_list"
+			],
+			[
+				"nex",
+				"next_intersection_point_list"
+			],
+			[
+				"incident",
+				"incident_lights"
+			],
+			[
+				"intersection_point",
+				"intersection_point_list"
+			],
+			[
+				"seco",
+				"second_intersection_point_list"
+			],
+			[
+				"first_refrac",
+				"first_refraction_lights"
+			],
+			[
+				"first_reflction",
+				"first_reflection_lines"
+			],
+			[
+				"sec",
+				"second_intersection_point_list"
+			],
+			[
+				"first",
+				"first_reflection_lights"
+			],
+			[
+				"refrat",
+				"refraction_index"
+			],
+			[
+				"calu",
+				"calculate_intersection_on_sphere"
 			],
 			[
 				"an",
@@ -134,412 +514,72 @@
 			[
 				"nor",
 				"normalized"
-			],
-			[
-				"relect",
-				"reflection_line"
-			],
-			[
-				"inter",
-				"intersection_point"
-			],
-			[
-				"get",
-				"get_ydata"
-			],
-			[
-				"relec",
-				"reflection_light"
-			],
-			[
-				"dra",
-				"drawer"
-			],
-			[
-				"sp",
-				"sphere"
-			],
-			[
-				"Lig",
-				"lightNum"
-			],
-			[
-				"if",
-				"if_continuous"
-			],
-			[
-				"data",
-				"data_frame"
-			],
-			[
-				"box",
-				"box_lightNum"
-			],
-			[
-				"remo",
-				"removeDataArea"
-			],
-			[
-				"can",
-				"canvas_layout"
-			],
-			[
-				"reflec",
-				"reflection"
-			],
-			[
-				"draw_",
-				"draw_line_outside"
-			],
-			[
-				"lin",
-				"linestyle"
-			],
-			[
-				"sta",
-				"start"
-			],
-			[
-				"Li",
-				"Line3D"
-			],
-			[
-				"incident",
-				"incident_light"
-			],
-			[
-				"cir",
-				"circle"
-			],
-			[
-				"plo",
-				"plot_lines"
-			],
-			[
-				"poni",
-				"points_and_lines"
-			],
-			[
-				"dire",
-				"direction"
-			],
-			[
-				"lgi",
-				"light"
-			],
-			[
-				"refle",
-				"reflection_lines"
-			],
-			[
-				"simu",
-				"simulate_button"
-			],
-			[
-				"point",
-				"points_and_lines"
-			],
-			[
-				"ra",
-				"radius"
-			],
-			[
-				"add",
-				"addWidget"
-			],
-			[
-				"file",
-				"fileDialog"
-			],
-			[
-				"clea",
-				"clearData"
-			],
-			[
-				"setM",
-				"setMinimum"
-			],
-			[
-				"QT",
-				"QTableWidgetItem"
-			],
-			[
-				"star_",
-				"start_point"
-			],
-			[
-				"fil",
-				"files_types"
-			],
-			[
-				"files",
-				"files_types"
-			],
-			[
-				"men",
-				"menuBar"
-			],
-			[
-				"rou",
-				"row_count"
-			],
-			[
-				"clear",
-				"clear_button"
-			],
-			[
-				"line",
-				"line"
-			],
-			[
-				"stat",
-				"start_point"
-			],
-			[
-				"delte",
-				"delete_line"
-			],
-			[
-				"dele",
-				"delete_line"
-			],
-			[
-				"cre",
-				"createModForm"
-			],
-			[
-				"del",
-				"delete_form"
-			],
-			[
-				"de",
-				"delete_form"
-			],
-			[
-				"crea",
-				"createDeleteForm"
-			],
-			[
-				"Qtab",
-				"QTableWidgetItem"
-			],
-			[
-				"dta",
-				"data_form"
-			],
-			[
-				"show",
-				"showMessage"
-			],
-			[
-				"Cen",
-				"AlignCenter"
-			],
-			[
-				"cor",
-				"coordinates"
-			],
-			[
-				"dir",
-				"direction_layout"
-			],
-			[
-				"lv",
-				"lvx"
-			],
-			[
-				"die",
-				"direction_point_label"
-			],
-			[
-				"in",
-				"input_form"
-			],
-			[
-				"Ali",
-				"AlignRight"
-			],
-			[
-				"main",
-				"main_layout"
-			],
-			[
-				"mai",
-				"main_layout"
-			],
-			[
-				"dat",
-				"data_layout"
-			],
-			[
-				"rel",
-				"reflection_light"
-			],
-			[
-				"reflection",
-				"reflection_light2"
-			],
-			[
-				"refrac",
-				"refraction_light"
-			],
-			[
-				"hor",
-				"horizon_or_vertical"
-			],
-			[
-				"dc",
-				"dc_toolbar"
-			],
-			[
-				"he",
-				"help_menu"
-			],
-			[
-				"view",
-				"view_menu"
-			],
-			[
-				"Q",
-				"Qt"
-			],
-			[
-				"Fi",
-				"FigureCanvas"
-			],
-			[
-				"fi",
-				"first_intersection_point"
-			],
-			[
-				"refa",
-				"refra_light"
-			],
-			[
-				"ref",
-				"ref_light"
-			],
-			[
-				"center",
-				"center_z"
-			],
-			[
-				"cen",
-				"center_y"
-			],
-			[
-				"cent",
-				"center_or_x"
-			],
-			[
-				"ceter",
-				"center_or_x"
-			],
-			[
-				"no",
-				"normal_sgn"
-			],
-			[
-				"com",
-				"compution_on_intersection"
-			],
-			[
-				"k",
-				"k_normal_vector"
-			],
-			[
-				"BA",
-				"BASIC_Z_AXIS_VECTOR"
-			],
-			[
-				"t_",
-				"t_limits"
-			],
-			[
-				"b",
-				"boarder_intersection_point"
-			],
-			[
-				"re",
-				"result"
-			],
-			[
-				"strin",
-				"string_dict"
-			],
-			[
-				"au",
-				"authentication"
-			],
-			[
-				"check",
-				"check_auth"
-			],
-			[
-				"ver",
-				"verification"
-			],
-			[
-				"str",
-				"struct"
-			],
-			[
-				"sat",
-				"start_event"
-			],
-			[
-				"us",
-				"used_time"
-			],
-			[
-				"yi",
-				"yield"
-			],
-			[
-				"T",
-				"TCPServer"
-			],
-			[
-				"Thre",
-				"ThreadingMixIn"
-			],
-			[
-				"ser",
-				"server_thread"
-			],
-			[
-				"Tr",
-				"ThreadedTCPServer"
-			],
-			[
-				"yie",
-				"yield_file_data"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "funcs3d.py",
+			"file": "qtApplication.py",
 			"settings":
 			{
-				"buffer_size": 3269,
-				"line_ending": "Windows"
+				"buffer_size": 21329,
+				"line_ending": "Unix"
 			}
 		},
 		{
 			"file": "intersectionFuncs.py",
 			"settings":
 			{
-				"buffer_size": 4776,
-				"line_ending": "Windows"
+				"buffer_size": 6854,
+				"line_ending": "Unix"
 			}
 		},
 		{
 			"file": "intersectionElements.py",
 			"settings":
 			{
-				"buffer_size": 2185,
+				"buffer_size": 2465,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "intersectionDrawer.py",
+			"settings":
+			{
+				"buffer_size": 8968,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "matplotCanvas.py",
+			"settings":
+			{
+				"buffer_size": 1569,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "funcs3d.py",
+			"settings":
+			{
+				"buffer_size": 3396,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "drawer3d.py",
+			"settings":
+			{
+				"buffer_size": 17113,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "qtApplication3D.py",
+			"settings":
+			{
+				"buffer_size": 24511,
 				"line_ending": "Unix"
 			}
 		},
@@ -547,72 +587,89 @@
 			"file": "pygameVector.py",
 			"settings":
 			{
-				"buffer_size": 23998,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "matplotCanvas.py",
-			"settings":
-			{
-				"buffer_size": 1408,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "drawer3d.py",
-			"settings":
-			{
-				"buffer_size": 15001,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "qtApplication3D.py",
-			"settings":
-			{
-				"buffer_size": 25273,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "intersectionDrawer.py",
-			"settings":
-			{
-				"buffer_size": 8905,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "#!/usr/bin/python3\n# -*- coding: utf-8 -*-\n\nimport os\nimport sys\nimport csv\nfrom collections import namedtuple\nimport matplotlib\nmatplotlib.use('Qt5Agg')\nimport matplotlib.pyplot as plt\n# from mpl_toolkits.mplot3d import Axes3D\nfrom PyQt5 import QtCore, QtWidgets, QtGui\nfrom matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar\nfrom matplotCanvas import ScatterCanvas\nfrom intersectionElements import Light, Circle\nfrom intersectionDrawer import drawer\nfrom pygameVector import Vec2d\n\n\nclass MyNavigationToolbar(NavigationToolbar):\n\n    # 去掉不需要的工具栏项目\n    toolitems =tuple(i for i in NavigationToolbar.toolitems\n                            if i[0] not in ('Subplots', ))\n\n\nclass ApplicationWindow(QtWidgets.QMainWindow):\n\n    def __init__(self):\n        super(ApplicationWindow, self).__init__()\n\n        self.data = {'start_point':[], 'vector':[]}\n\n        self.setAttribute(QtCore.Qt.WA_DeleteOnClose)   #  Make Qt delete this widget when widget accept close event\n        app_icon = QtGui.QIcon()\n        app_icon.addFile('icon.png', QtCore.QSize(124, 124))\n        app.setWindowIcon(app_icon)\n        self.setWindowTitle('球形粒子几何光学追迹')\n\n        self.if_3d = False\n        self.angle_y = None\n\n        self.addMenu()\n\n        self.main_widget = QtWidgets.QWidget(self)\n        self.main_layout = QtWidgets.QHBoxLayout(self.main_widget)\n        self.main_widget.setSizePolicy(QtWidgets.QSizePolicy.Expanding,\n                                       QtWidgets.QSizePolicy.Expanding)\n\n        self.addDataArea()\n\n        self.statusBar()\n\n        self.canvas_2d = ScatterCanvas(self.main_widget, 8, 8)\n        self.addCanvas(self.canvas_2d)\n\n        self.addOutputArea()\n        self.output_frame.setHidden(True)\n\n        self.main_widget.setFocus()\n        self.setCentralWidget(self.main_widget)\n\n    def addDataArea(self):\n        if_3d = self.if_3d\n\n        self.data_frame = QtWidgets.QFrame()\n        self.data_layout = QtWidgets.QVBoxLayout()\n        self.data_layout.setAlignment(QtCore.Qt.AlignLeft)\n        self.data_frame.setLayout(self.data_layout)\n        self.data_frame.setSizePolicy(QtWidgets.QSizePolicy.Expanding,\n                                      QtWidgets.QSizePolicy.Expanding)\n\n        # show light information\n        data_form = QtWidgets.QVBoxLayout()\n        self.createTable()\n        data_form.setSpacing(10)\n        data_form.addWidget(self.tableWidget)\n        self.data_form = data_form\n\n        # line1.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)\n\n        qbox = QtWidgets.QGroupBox('Light')\n        qbox.setLayout(data_form)\n        qbox.setAlignment(QtCore.Qt.AlignCenter)\n        qbox.setContentsMargins(-12, 12, -5, -5)\n\n        scrollArea = QtWidgets.QScrollArea()\n        scrollArea.setAlignment(QtCore.Qt.AlignLeft)\n        scrollArea.setWidget(qbox)\n        scrollArea.setWidgetResizable(True)\n\n        qbox.updateGeometry()\n        self.data_layout.addWidget(scrollArea)\n\n        # coordinates\n        input_form = QtWidgets.QFormLayout()\n        input_form.setSpacing(0)\n        input_form.setAlignment(QtCore.Qt.AlignLeft)\n        coordinates = QtWidgets.QHBoxLayout()\n        coordinates.setSpacing(0)\n        coordinates.setAlignment(QtCore.Qt.AlignLeft)\n        input_form.addRow('Start Point:  ', coordinates)\n        lx, ly = QtWidgets.QLabel('x:   '), QtWidgets.QLabel('y:   ')\n        self.startpoint_x, self.startpoint_y = [QtWidgets.QSpinBox() for i in range(2)]\n        self.startpoint_x.setRange(-10000, 10000)\n        self.startpoint_y.setRange(-10000, 10000)\n        self.co = (self.startpoint_x, self.startpoint_y)\n        self.startpoint_x.setValue(-1.5*1000)\n        self.startpoint_x.setEnabled(False)\n        label = (lx, ly)\n        for _co, _label in zip(self.co, label):\n            coordinates.addWidget(_label)\n            coordinates.addWidget(_co)\n\n        # direction\n        direction_layout = QtWidgets.QHBoxLayout()\n        direction_layout.setContentsMargins(-20, 0, 0, 0)\n        direction_layout.setAlignment(QtCore.Qt.AlignLeft)\n        input_form.addRow('Direction:  ', direction_layout)\n        lvx, lvy = QtWidgets.QLabel('Vx: '), QtWidgets.QLabel('Vy: ')\n        vx, vy = [QtWidgets.QDoubleSpinBox() for i in range(2)]\n        vx.setValue(1)\n        self.v = (vx, vy)\n        lv = (lvx, lvy)\n        for _v, _lv in zip(self.v, lv):\n            direction_layout.addWidget(_lv)\n            direction_layout.addWidget(_v)\n\n        self.data_layout.addLayout(input_form)\n\n        self.createModForm()\n        self.data_layout.addLayout(self.mod_form)\n\n        self.main_layout.addWidget(self.data_frame)\n\n    def createTable(self):\n        self.tableWidget = QtWidgets.QTableWidget()\n        self.tableWidget.setGeometry(0, 0, 100, 600)\n        self.tableWidget.setRowCount(1)\n        self.tableWidget.setColumnCount(2)\n        self.tableWidget.setColumnWidth(0, 120)\n        self.tableWidget.setColumnWidth(1, 120)        \n        self.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem('Start Point'))\n        self.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem('Direction'))\n\n    def createModForm(self):\n        self.mod_form = QtWidgets.QFormLayout()\n        self.submit_button = QtWidgets.QPushButton('add')\n        self.submit_button.pressed.connect(self.addData)\n        self.mod_form.addRow(self.submit_button)\n        self.mod_form.setContentsMargins(-50, 0, 0, 0)\n        h = QtWidgets.QHBoxLayout()\n        self.delete_line = QtWidgets.QSpinBox()\n        self.delete_line.setMaximum(self.tableWidget.rowCount())\n        self.delete_line.setMinimum(self.tableWidget.rowCount())\n        self.delete_button = QtWidgets.QPushButton('delete')\n        self.delete_button.pressed.connect(self.removeData)\n        self.clear_button = QtWidgets.QPushButton('clear')\n        self.clear_button.pressed.connect(self.clearData)\n        h.addWidget(self.delete_line)\n        h.addWidget(self.delete_button)\n        h.addWidget(self.clear_button)\n        self.mod_form.addRow('Line:', h)\n\n    def addData(self):\n        start_point = tuple(round(_co.value()/1000, 5) for _co in self.co)\n        vector = tuple(round(_v.value(), 5) for _v in self.v)\n        for (p, v) in zip(self.data['start_point'], self.data['vector']):\n            if start_point == p and vector == v:\n                self.statusBar().showMessage('！ already have same data')\n                return\n        self.data['start_point'].append(start_point)\n        self.data['vector'].append(vector)\n        self.tableWidget.setRowCount(len(self.data['start_point'])+1)\n        self.tableWidget.setItem(len(self.data['start_point']), 0, QtWidgets.QTableWidgetItem(str(start_point)))\n        self.tableWidget.setItem(len(self.data['start_point']), 1, QtWidgets.QTableWidgetItem(str(vector)))\n        self.delete_line.setMaximum(self.tableWidget.rowCount())\n        self.delete_line.setMinimum(2)\n        self.statusBar().clearMessage()\n\n    def removeData(self):\n        line = self.delete_line.value()\n        if not self.data['start_point']:\n            self.statusBar().showMessage('！ No data')\n            return\n        p = self.data['start_point'].pop(line-2)\n        v = self.data['vector'].pop(line-2)\n        self.tableWidget.removeRow(line-1)\n        self.statusBar().showMessage('Line: {2}, point:{0} vector:{1} has been removed.'.format(p, v, line))\n        mini_row = 2 if self.tableWidget.rowCount() > 2 else 1\n        self.delete_line.setMinimum(mini_row)\n        self.delete_line.setMaximum(self.tableWidget.rowCount())\n\n    def clearData(self):\n        self.data = {'start_point':[], 'vector':[]}\n        row_count = self.tableWidget.rowCount()\n        for i in range(row_count, 0, -1):\n            self.tableWidget.removeRow(i)\n        self.delete_line.setMaximum(self.tableWidget.rowCount())\n        self.delete_line.setMinimum(self.tableWidget.rowCount())\n\n    def addCanvas(self, canvas):\n        # plotting area\n        self.canvas_frame = QtWidgets.QFrame()\n        self.canvas_layout = QtWidgets.QVBoxLayout()\n        self.canvas_frame.setLayout(self.canvas_layout)\n\n        self.comboBox = QtWidgets.QComboBox()\n        self.comboBox.addItem(\"Single Points\")\n        self.comboBox.addItem(\"Continuous\")\n        self.comboBox.currentIndexChanged.connect(self.selectionChange)\n        self.canvas_layout.addWidget(self.comboBox)\n\n        self.light_attribute_form = QtWidgets.QGridLayout()\n\n        lable_m, label_radius, label_waveLength, label_lightNum, label_times = QtWidgets.QLabel('m (refraction index):'), \\\n                    QtWidgets.QLabel('Radius (um):'), QtWidgets.QLabel('Wave Length (nm):'), \\\n                    QtWidgets.QLabel('Light Nums:'), QtWidgets.QLabel('times:')\n        self.box_m, self.box_radius, self.box_waveLength, self.box_lightNum, self.box_times = [QtWidgets.QDoubleSpinBox() for i in range(5)]\n        labels = [[label_radius], [lable_m, label_waveLength], [label_lightNum, label_times]]\n        boxes = [[self.box_radius], [self.box_m, self.box_waveLength], [self.box_lightNum, self.box_times]]\n\n        self.box_m.setDecimals(4)\n        self.box_m.setValue(1.335)\n        self.box_radius.setDecimals(2)\n        self.box_radius.setRange(0, 10000)\n        self.box_radius.setValue(1000)\n        self.box_radius.valueChanged.connect(self.change_radius)\n        self.box_waveLength.setDecimals(2)\n        self.box_waveLength.setMaximum(1000)\n        self.box_waveLength.setValue(532)\n        self.box_lightNum.setDecimals(0)\n        self.box_lightNum.setMaximum(2000)\n        self.box_lightNum.setValue(3)\n        self.box_lightNum.setEnabled(False)\n        self.box_times.setDecimals(0)\n        self.box_times.setValue(3)\n        self.box_times.setMaximum(20)\n\n        for row, widgets in enumerate(zip(labels, boxes)):\n            for column, (label, box) in enumerate(zip(*widgets)):\n                self.light_attribute_form.addWidget(label, row, column*2)\n                self.light_attribute_form.addWidget(box, row, column*2+1)\n\n        self.simulate_button = QtWidgets.QPushButton('Simulate')\n        self.simulate_button.pressed.connect(self.simulate_2d)\n\n        self.canvas_layout.addLayout(self.light_attribute_form)\n        self.canvas_layout.addWidget(self.simulate_button)\n\n        self.fig_toolbar = MyNavigationToolbar(canvas, self.main_widget)\n        self.canvas_layout.addWidget(canvas)\n        self.canvas_layout.addStretch()\n        self.canvas_layout.addWidget(self.fig_toolbar)\n\n        self.copyright_frame = QtWidgets.QFrame()\n        self.copyright_layout = QtWidgets.QHBoxLayout()\n        self.copyright_layout.setAlignment(QtCore.Qt.AlignRight)\n        _empty_label = QtWidgets.QLabel()\n        self.copyright_label = QtWidgets.QLabel('西电韩香娥团队所有 \\u00a9 Coder:陈嘉琅')\n        self.copyright_label.setFont(QtGui.QFont('Times', 12))\n        self.copyright_layout.addWidget(_empty_label)\n        self.copyright_layout.addWidget(self.copyright_label)\n        self.copyright_frame.setLayout(self.copyright_layout)\n        self.canvas_layout.addWidget(self.copyright_frame)\n\n        self.main_layout.addWidget(self.canvas_frame)\n\n    def selectionChange(self):\n        if \"Continuous\" == self.comboBox.currentText():\n            self.data_frame.setHidden(True)\n            self.output_frame.setHidden(False)\n            self.data_layout.setEnabled(False)\n            self.box_lightNum.setEnabled(True)\n            self.box_lightNum.setMinimum(2)\n        else:\n            self.data_frame.setHidden(False)\n            self.output_frame.setHidden(True)\n            self.data_layout.setEnabled(True)\n            self.box_lightNum.setEnabled(False)\n\n    def addMenu(self):\n\n        # add file menu\n        self.file_menu = QtWidgets.QMenu('&File', self)\n        self.file_menu.addAction('&New', self.fileNew, \n                                 QtCore.Qt.CTRL + QtCore.Qt.Key_N)\n        # self.file_menu.addAction('&Open', self.fileOpen,\n                                 # QtCore.Qt.CTRL + QtCore.Qt.Key_O)\n        self.file_menu.addAction('Save Data', self.fileSave,\n                                 QtCore.Qt.CTRL + QtCore.Qt.SHIFT + QtCore.Qt.Key_S)\n        self.file_menu.addAction('&Save Image', self.imageSave,\n                                 QtCore.Qt.CTRL + QtCore.Qt.Key_S)\n        self.file_menu.addAction('&Quit', self.fileQuit, \n                                 QtCore.Qt.CTRL + QtCore.Qt.Key_Q)\n        self.menuBar().addMenu(self.file_menu)\n\n        self.menuBar().addSeparator()\n        # add help documentation\n        self.help_menu = QtWidgets.QMenu('&Help', self)\n        self.help_menu.addAction('&Documentation', self.show_documentation)\n        self.menuBar().addMenu(self.help_menu)\n\n    def fileNew(self):\n        # refresh the User Interface\n        self.clearData()\n\n    # def fileOpen(self):\n    #     self.data = {'start_point':[], 'vector':[]}\n    #     files_types = \"CSV data files (*.csv)\"\n    #     fileDialog = QtWidgets.QFileDialog()\n    #     fileDialog.setAcceptMode(QtWidgets.QFileDialog.AcceptOpen)\n    #     filename, fil = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', os.path.expanduser('~'), files_types)\n    #     try:\n    #         with open(filename, 'r') as f:\n    #             f_csv = csv.reader(f)\n    #             header = next(f_csv)\n    #             Row = namedtuple('Row', header)\n    #             for r in f_csv:\n    #                 row = Row(*r)\n    #                 self.data['start_point'].append(row.start_point)\n    #                 self.data['vector'].append(row.vector)\n    #     except FileNotFoundError:\n    #         self.statusBar().showMessage('open operation abort.')\n    #     except Exception as e:\n    #         self.statusBar().showMessage('file {0} is not a correct format file.'.format(filename))\n    #         print (e)\n    #     else:\n    #         self.tableWidget.setRowCount(len(self.data['start_point'])+1)\n    #         i = 0\n    #         for p, v in zip(self.data['start_point'], self.data['vector']):\n    #             self.tableWidget.setItem(i+1, 0, QtWidgets.QTableWidgetItem(str(p)))\n    #             self.tableWidget.setItem(i+1, 1, QtWidgets.QTableWidgetItem(str(v)))\n    #             i += 1\n    #         self.delete_line.setMaximum(self.tableWidget.rowCount())\n    #         self.delete_line.setMinimum(1)\n\n    def fileSave(self):\n        # save data to file\n        if not self.angle_y:\n            self.statusBar().showMessage('No data simulated.')\n            return\n        data = self.angle_y\n        result = []\n        for i, angle in enumerate(data):\n            angle.insert(0, i+1)\n            result.append(angle)\n        files_types = \"CSV data files (*.csv)\"\n        fileDialog = QtWidgets.QFileDialog()\n        fileDialog.setAcceptMode(QtWidgets.QFileDialog.AcceptSave)\n        filename, fil = QtWidgets.QFileDialog.getSaveFileName(self, 'Save file', os.path.expanduser('~'), files_types)\n        try:\n            with open(filename, 'w') as f:\n                f_csv = csv.writer(f)\n                first_row = ['0', ]\n                first_row.extend(list(range(len(data[0])-1)))\n                f_csv.writerow(first_row)\n                f_csv.writerows(result)\n        except FileNotFoundError:\n            self.statusBar().showMessage('data not save.')\n\n    def fileQuit(self):\n        # quit app\n        self.close()\n\n    def imageSave(self):\n        # save the simulation result\n        try:\n            self.fig_toolbar.save_figure()\n        except Exception as e:\n            self.statusBar().showMessage('Image not save Exception:%s' % e)\n\n    def simulate_2d(self):\n        # clear plot\n        ax = self.canvas_2d.axes\n        ax.clear()\n        self.canvas_2d.draw()\n\n        radius = float(self.box_radius.value())/1000\n        lightNum = int(self.box_lightNum.value())\n        waveLength = float(self.box_waveLength.value())\n        times = int(self.box_times.value())\n        refraction_index = float(self.box_m.value())\n\n        circle = Circle(radius)\n        circle_patch = plt.Circle((0,0), radius, fill=False)\n\n        x = []\n        y = []\n        if_continuous = True if 'Continuous' == self.comboBox.currentText() else False\n        if not if_continuous:\n            points_and_lines = []\n            start_points = self.data['start_point']\n            directions = self.data['vector']\n            for p, v in zip(start_points, directions):\n                v = (float(v[0]), float(v[1]))\n                light = Light(waveLength, Vec2d(v).normalized(), 1, unit='nm')\n                points_and_lines.append(drawer(circle, light, refraction_index, intersection_time=times, start_point=p))\n            x = []\n            y = []\n            lines = []\n            for pl in points_and_lines:\n                xy = pl['intersection_points']\n                x.extend(xy[0])\n                y.extend(xy[1])\n                lines.append(pl['incident_lines'])\n                lines.append(pl['refraction_lines'])\n                lines.append(pl['reflection_lines'])\n            lines = [ ll for line in lines for l in line for ll in l ]\n        else:\n            for i in reversed(range(self.output_figure_layout.count())):\n                if self.output_figure_layout.itemAt(i).widget():\n                    self.output_figure_layout.itemAt(i).widget().setParent(None)\n            v = (1, 0)\n            light = Light(waveLength, Vec2d(v).normalized(), 1, unit='nm')\n            points_and_lines = drawer(circle, light, refraction_index, density=lightNum, intersection_time=times)\n            xy = points_and_lines['intersection_points']\n            x = xy[0]\n            y = xy[1]\n            lines = [line for l in (points_and_lines['incident_lines'], \\\n                                    points_and_lines['refraction_lines'], \\\n                                    points_and_lines['reflection_lines']) for ll in l for line in ll]\n\n            # angle of refraction\n            lights = points_and_lines['refraction_lights']\n            lights[0] = points_and_lines['reflection_lights'][0]\n            angle_x = list(range(len(lights[0])))\n            self.angle_y = []\n            for l in lights:\n                self.angle_y.append([light.direction.angle for light in l])\n            for i, _y in enumerate(self.angle_y):\n                _canvas = ScatterCanvas(width=3, height=5)   # size of each figure \n                _canvas.axes.scatter(angle_x, _y)\n                _canvas.axes.set_title('(%i time) Aimuth angle distribution' % (i+1))\n                _canvas.axes.set_ylabel('angle (degree)')\n                _canvas.axes.set_xlabel('num of light')\n                _canvas.setMinimumHeight(400)\n                self.output_figure_layout.addWidget(_canvas)\n            self.output_scroll.updateGeometry()\n\n        s = [8] * len(x)\n        ax.scatter(x, y, s=s)\n        ax.add_patch(circle_patch)\n        ax.axis('equal')\n        if lines:\n            for l in lines:\n                ax.add_line(l)\n        boarder = 2*radiusaaAaaaaaaaaa\n        ax.axis([-boarder, boarder, -boarder, boarder])\n        self.canvas_2d.draw()\n\n    def addOutputArea(self):\n\n        self.output_frame = QtWidgets.QFrame()\n        self.output_frame.setSizePolicy(QtWidgets.QSizePolicy.Expanding,\n                                        QtWidgets.QSizePolicy.Expanding)\n        self.output_vbox = QtWidgets.QVBoxLayout()\n        self.output_frame.setLayout(self.output_vbox)\n\n        self.output_figure_layout = QtWidgets.QVBoxLayout()\n        self.output_figure_layout.addStretch()\n        output_group_box = QtWidgets.QGroupBox()\n        output_group_box.setLayout(self.output_figure_layout)\n\n\n        self.output_scroll = QtWidgets.QScrollArea()\n        self.output_scroll.setWidget(output_group_box)\n        self.output_scroll.setWidgetResizable(True)\n        self.output_scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)\n        self.output_scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)\n\n\n        self.output_vbox.addWidget(self.output_scroll)\n\n        # self.output_list = QtWidgets.QListWidget()\n        # self.output_vbox.addWidget(self.output_list)\n\n        self.main_layout.addWidget(self.output_frame)\n\n    def change_radius(self):\n        radius = float(self.box_radius.value())\n        self.startpoint_x.setValue(-1.5*radius)\n        self.startpoint_y.setRange(-radius+1, radius-1)\n\n\n    def show_documentation(self):\n        pass\n\n\n\napp = QtWidgets.QApplication(sys.argv)\n\nappWindow = ApplicationWindow()\nappWindow.showMaximized()\nsys.exit(app.exec_())\n\n",
-			"file": "qtApplication.py",
-			"file_size": 21080,
-			"file_write_time": 131407674979311316,
-			"settings":
-			{
-				"buffer_size": 20526,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "pyintaller_script",
-			"settings":
-			{
-				"buffer_size": 120,
-				"line_ending": "Windows",
-				"name": "pyintaller -w -D -p E:\\PythonProject\\geometric-lig"
+				"buffer_size": 24000,
+				"line_ending": "Unix"
 			}
 		}
 	],
 	"build_system": "Packages/Python/Python.sublime-build",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					""
+				],
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					"Run"
+				]
+			],
+			[
+				"Packages/C++/C++ Single File.sublime-build",
+				"Run"
+			]
+		],
+		[
+			[
+				[
+					"Packages/LESS-build/LESS.sublime-build",
+					""
+				],
+				[
+					"Packages/LESS-build/LESS.sublime-build",
+					"Minify"
+				]
+			],
+			[
+				"Packages/LESS-build/LESS.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/lessc/lessc.sublime-build",
+					""
+				],
+				[
+					"Packages/lessc/lessc.sublime-build",
+					"Non-Minified"
+				]
+			],
+			[
+				"Packages/lessc/lessc.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
 	"command_palette":
 	{
-		"height": 392.0,
+		"height": 167.0,
+		"last_filter": "virtual",
 		"selected_items":
 		[
 			[
-				"inst",
-				"Package Control: Install Package"
+				"virtual",
+				"Virtualenv: Activate"
 			],
 			[
 				"in",
@@ -671,13 +728,14 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 504.0
+		"width": 449.0
 	},
 	"console":
 	{
 		"height": 126.0,
 		"history":
 		[
+			"run"
 		]
 	},
 	"distraction_free":
@@ -689,26 +747,43 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle"
+	],
 	"file_history":
 	[
-		"/E/PythonProject/geometric-light-scatter-on-circle/geometric.sublime-project",
-		"/E/PythonProject/geometric-light-scatter-on-circle/embed_test.py",
-		"/E/PythonProject/geometric-light-scatter-on-circle/plotting_many_lines.py",
-		"/Users/CsMac/Code/sublime/project_venv_repls.py",
-		"/E/PythonProject/geometric-light-scatter-on-circle/typeChecker.py",
-		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/intersectionFuncs.py",
-		"/Users/CsMac/test.csv",
-		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/drawer3d.py",
-		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/intersectionDrawer.py",
+		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/geometric.sublime-project",
+		"/Users/CsMac/Library/Application Support/Sublime Text 3/Packages/Virtualenv/README.md",
+		"/Users/CsMac/Library/Application Support/Sublime Text 3/Packages/User/Virtualenv.sublime-settings",
+		"/Users/CsMac/Library/Application Support/Sublime Text 3/Packages/Virtualenv/Virtualenv.sublime-settings",
+		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/.gitignore",
+		"/Users/CsMac/.ShadowsocksX/gfwlist.js",
 		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/intersectionElements.py",
+		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/README.md",
+		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/intersectionDrawer.py",
+		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/intersectionFuncs.py",
+		"/Users/CsMac/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/CsMac/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/qtApplication.py",
+		"/Users/CsMac/Desktop/qtApplication3D.py",
+		"/Users/CsMac/Desktop/matplotCanvas.py",
+		"/Users/CsMac/Desktop/qtApplication.py",
+		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/drawer3d.py",
+		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/typeChecker.py",
+		"/Users/CsMac/Library/Application Support/Sublime Text 3/Packages/User/SublimeREPL.sublime-settings",
+		"/Users/CsMac/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/CsMac/Code/sublime/project_venv_repls.py",
+		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/matplotCanvas.py",
 		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/funcs3d.py",
+		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/embed_test.py",
+		"/Users/CsMac/test.csv",
 		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/pygameVector.py",
 		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/Drawer3D.py",
 		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/Funcs3D.py",
 		"/Users/CsMac/Code/essay/geometric-light-scatter-on-circle/intersection",
 		"/Users/CsMac/Code/essay/intersection.py",
 		"/Users/CsMac/Code/essay/pygame_vector.py",
-		"/Users/CsMac/.ShadowsocksX/gfwlist.js",
 		"/Users/CsMac/Code/PythonPlayground/string_method.py",
 		"/Users/CsMac/Code/PythonPlayground/check_symmetry.py",
 		"/Users/CsMac/Code/PythonPlayground/list_mini_n.py",
@@ -736,11 +811,9 @@
 		"/Users/CsMac/Code/mysite_html/js_test.html",
 		"/Users/CsMac/Code/CPP/show-bytes.c",
 		"/Users/CsMac/Code/mysite_html/js_test.js",
-		"/Users/CsMac/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
 		"/Users/CsMac/Library/Application Support/Sublime Text 3/Packages/SideBarEnhancements/Default (OSX).sublime-keymap",
 		"/Users/CsMac/Library/Application Support/Sublime Text 3/Packages/SideBarEnhancements/Side Bar.sublime-settings",
 		"/Users/CsMac/Library/Application Support/Sublime Text 3/Installed Packages/SideBarEnhancements.sublime-package",
-		"/Users/CsMac/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/Users/CsMac/Library/Mobile Documents/com~apple~CloudDocs/Documents/thoughtworks.html",
 		"/Users/CsMac/Code/PythonPlayground/singleton.py",
 		"/Users/CsMac/Downloads/SogouR.mini.txt",
@@ -807,22 +880,11 @@
 		"/Users/CsMac/Work/script.py",
 		"/Users/CsMac/Work/data_histogram.py",
 		"/Users/CsMac/Work/ConnectionMongo.py",
-		"/Users/CsMac/Work/result.json",
-		"/Users/CsMac/Work/test.txt",
-		"/Users/CsMac/Downloads/mongodb-osx-x86_64-3.2.10/local/lib/python2.7/site-packages/pymongo/helpers.py",
-		"/Users/CsMac/Work/test.py",
-		"/Users/CsMac/Work/result1.json",
-		"/Users/CsMac/Work/code/input.json",
-		"/Users/CsMac/Work/input.json",
-		"/Users/CsMac/Work/DataHandle/data_filter.py",
-		"/Users/CsMac/Work/data_filter.py",
-		"/Users/CsMac/Downloads/mongodb-osx-x86_64-3.2.10/local/lib/python2.7/site-packages/pymongo/__init__.py",
-		"/Users/CsMac/Work/example/selection_histogram.py",
-		"/Users/CsMac/Work/line.html"
+		"/Users/CsMac/Work/result.json"
 	],
 	"find":
 	{
-		"height": 34.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
@@ -840,13 +902,73 @@
 		"case_sensitive": true,
 		"find_history":
 		[
-			"azimuth_angle",
-			"Lifting",
-			"set_y",
-			"x",
-			"value",
-			"box_radi",
-			"Changed",
+			"设置共享y坐标轴",
+			"设置共享x坐标轴",
+			"calculate_elevation_angle",
+			"集合",
+			"label",
+			"generate_centerline",
+			"generate_skeleton",
+			"generate_start_points",
+			"rect",
+			"QtCore",
+			"QtGui",
+			"Rect",
+			"'''",
+			"tol",
+			"light_intersection",
+			"Vec3d",
+			"Vec2d",
+			"circle",
+			"Circle",
+			"y_changed",
+			"center",
+			"radius",
+			"operator",
+			"iter",
+			"self.x, self.y",
+			"(self.x, self.y)",
+			"it",
+			"iter",
+			"Vec2d",
+			"vy",
+			"vy_changed",
+			"change_radius",
+			"Circle",
+			"center",
+			"MaximumWi",
+			"elevation_angle",
+			"azimuth",
+			"elevation_angle",
+			"light",
+			"co_settings",
+			"co_checkbox",
+			"reflection",
+			"drawer",
+			"namedtuple",
+			"Vec3d",
+			"Vec2d",
+			"tap",
+			"if_3d",
+			"angle_y",
+			"canvas_2d",
+			"Size",
+			"Geo",
+			"fig",
+			"axes",
+			"if_3d",
+			"canvas",
+			"show",
+			"addCanvas",
+			"generate_centerline",
+			"matrix_vector",
+			"reflection",
+			"generate_multi_start_points",
+			"generate_sphere_cordinates",
+			"first_intersection_point",
+			"v",
+			"multi_lights_drawer",
+			"calculate_first_intersection",
 			"next_intersection_point",
 			"relection_line",
 			"light",
@@ -907,67 +1029,7 @@
 			"std_date",
 			"std_name",
 			"year_on_year",
-			"first_year_end_date",
-			"first_year_start_date",
-			"year",
-			"\"\"",
-			"list()",
-			"this_year_month",
-			"ordinary_year_mon",
-			"ordinary_year_month",
-			"ordinary_this_year_result",
-			"start_date",
-			"last",
-			"holiday_last_month",
-			"holiday_last_year_result",
-			"ordinary_last_year_result",
-			"ordinary_last_month_list",
-			"holiday_last_year",
-			"ordinary_last_year",
-			"ordinary_last_year_result",
-			"holiday_last_year_result",
-			"holiday_day_result",
-			"holiday_last_year_result",
-			"year",
-			"ordinary_last_year_list",
-			"dept",
-			"fetchone",
-			"nanmin",
-			"median",
-			"std",
-			"ordinary_day_std",
-			"std",
-			"var",
-			"avg",
-			"sum",
-			"ordinary_day_sum",
-			"execut",
-			"tbn1",
-			"xl",
-			"x",
-			"outpemgc_data_basic",
-			"server_ip",
-			"hosp",
-			"%",
-			";",
-			"as",
-			"hosp_data_basic",
-			"UNSIGNED",
-			"unsigned",
-			",\n",
-			"num_outp_pa",
-			"outpemgc_data_basic",
-			"outp_rusult",
-			"people_in_hosp",
-			"num_people",
-			"num_emgc_pat",
-			"num_emgc_people",
-			"num_outp_people",
-			"is_out_emgc",
-			"people_num",
-			"record.keys",
-			"record",
-			"except_types"
+			"first_year_end_date"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -989,38 +1051,37 @@
 	"groups":
 	[
 		{
-			"selected": 7,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "funcs3d.py",
+					"file": "qtApplication.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3269,
+						"buffer_size": 21329,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2606,
-								2606
+								203,
+								203
 							]
 						],
 						"settings":
 						{
-							"encoding_helper_encoding": "UTF-8",
-							"origin_encoding": "UTF-8",
 							"syntax": "Packages/Python/Python.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1008.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
@@ -1029,21 +1090,19 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4776,
+						"buffer_size": 6854,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2269,
-								2269
+								536,
+								536
 							]
 						],
 						"settings":
 						{
-							"encoding_helper_encoding": "cp936",
-							"origin_encoding": "UTF-8",
 							"syntax": "Packages/Python/Python.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
@@ -1052,6 +1111,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
@@ -1060,60 +1120,58 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2185,
+						"buffer_size": 2465,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1963,
-								1963
+								1986,
+								1986
 							]
 						],
 						"settings":
 						{
-							"encoding_helper_encoding": "cp936",
-							"origin_encoding": "ASCII",
 							"syntax": "Packages/Python/Python.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 511.0,
+						"translation.y": 510.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "pygameVector.py",
+					"file": "intersectionDrawer.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 23998,
+						"buffer_size": 8968,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8455,
-								8460
+								3168,
+								3168
 							]
 						],
 						"settings":
 						{
-							"encoding_helper_encoding": "cp936",
-							"origin_encoding": "ASCII",
 							"syntax": "Packages/Python/Python.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3984.0,
+						"translation.y": 966.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
@@ -1122,177 +1180,154 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1408,
+						"buffer_size": 1569,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								1005,
+								1005
 							]
 						],
 						"settings":
 						{
-							"encoding_helper_encoding": "cp936",
-							"origin_encoding": "ASCII",
-							"syntax": "Packages/Python/Python.tmLanguage"
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 144.0,
+						"translation.y": 255.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
 					"buffer": 5,
-					"file": "drawer3d.py",
+					"file": "funcs3d.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 15001,
+						"buffer_size": 3396,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								9920,
-								9920
+								268,
+								268
 							]
 						],
 						"settings":
 						{
-							"encoding_helper_encoding": "UTF-8",
-							"origin_encoding": "UTF-8",
 							"syntax": "Packages/Python/Python.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 240.0,
+						"translation.y": 47.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
 					"buffer": 6,
+					"file": "drawer3d.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 17113,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9071,
+								9071
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3788.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"file": "icon.png",
+					"semi_transient": true,
+					"stack_index": 2,
+					"type": "image"
+				},
+				{
+					"buffer": 7,
 					"file": "qtApplication3D.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 25273,
+						"buffer_size": 24511,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8602,
-								8602
+								18593,
+								18593
 							]
 						],
 						"settings":
 						{
-							"encoding_helper_encoding": "UTF-8",
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 1920.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "intersectionDrawer.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8905,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1662,
-								1662
-							]
-						],
-						"settings":
-						{
-							"encoding_helper_encoding": "cp936",
-							"origin_encoding": "ASCII",
 							"syntax": "Packages/Python/Python.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1008.0,
+						"translation.y": 9291.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
 					"buffer": 8,
-					"file": "qtApplication.py",
+					"file": "pygameVector.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 20526,
+						"buffer_size": 24000,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								18868,
-								18868
+								24000,
+								24000
 							]
 						],
 						"settings":
 						{
-							"encoding_helper_encoding": "UTF-8",
-							"origin_encoding": "UTF-8",
 							"syntax": "Packages/Python/Python.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 696.0,
+						"translation.y": 11875.0,
 						"zoom_level": 1.0
 					},
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "pyintaller_script",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 120,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								120,
-								0
-							]
-						],
-						"settings":
-						{
-							"auto_name": "pyintaller -w -D -p E:\\PythonProject\\geometric-lig",
-							"encoding_helper_encoding": "UTF-8",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
+					"stack_index": 3,
 					"type": "text"
 				}
 			]
@@ -1341,6 +1376,7 @@
 	{
 		"height": 0.0
 	},
+	"pinned_build_system": "Packages/Virtualenv/Python + Virtualenv.sublime-build",
 	"project": "geometric.sublime-project",
 	"replace":
 	{
@@ -1350,6 +1386,7 @@
 	"select_file":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],
@@ -1358,6 +1395,7 @@
 	"select_project":
 	{
 		"height": 500.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],
@@ -1366,11 +1404,13 @@
 	"select_symbol":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],
 		"width": 0.0
 	},
+	"selected_group": 0,
 	"settings":
 	{
 	},
@@ -1378,7 +1418,7 @@
 	"show_open_files": true,
 	"show_tabs": false,
 	"side_bar_visible": true,
-	"side_bar_width": 191.0,
+	"side_bar_width": 235.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
