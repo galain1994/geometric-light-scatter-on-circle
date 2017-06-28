@@ -1,31 +1,41 @@
-# 界面 QtApplication
-
-- 编排
-
-最左：QVBoxLayout 用一个QFrame将其包含，因为Frame是一个Widget（组件）可以做到随时隐藏，随时显示
-而对于Layout而言，只能通过遍历其中的组件，将组件一个一个的隐藏才能完成对layout及其元素的隐藏。之所以要隐藏，是因为添加系列光线与添加单条光线不同同时存在，为了不发生错误，隐藏起来直接禁止用户同时输入两种数据反而更加安全。
-Start point表示起点，V表示光线的方向向量，由此可以确定一条入射光线；将当前的数据加入计算的入射光线中，按add按钮。
-delete前面的选项框表示需要删除的行数，对应的，删除了对应的入射光线，则会在下次计算时去除。
-clear 表示清空所有数据。
-
-对于当前的数据可以保存为一个csv文件，方便下次使用时，不用重新一条一条的输入。
-csv文件的格式为：第一行为表头
-start_point vector   
-（数据点1）， （向量1）
-
-起始点与向量在界面中使用表格展示，对这些数据进行操作时，要时刻保持表格的更新，这样才能保证后台数据与前端显示一致。
-
-中间：
-下拉框决定是否使用连续光线的生成器，选择是时将隐藏左侧数据输入的边栏。
-往下是参数输入部分，再往下是作图区域，即matplotlib的Canvas实例，实现matplotlib嵌入到PyQt的功能，底部的工具栏也是matplotlib的图形工具栏，这样对于其的使用会有较少的问题出现。
+# VCRM application
 
 
-右侧：
-数据输出部分。
-分别显示第几次作用的出射角度。
+## Elements
+
+- Circle
+- Light
+- Sphere
+
+### Circle
+
+Parameter:
+`radius` unit: mm
+`center` pass(x, y) to the first parameter; OR pass x, y to each parameter.
+
+method:
+`on_circle` pass `point`, `tol=1e-5` to method `tol` means the accuracy
+
+### Light
+
+Parameter:
+`wavelength`
+`direction` : a vector, instance of Vec2d or Vec3d
+`refraction_index` : refraction index outside the particle
+`unit` : the unit of the wavelength 
 
 
-# 3D funcs
+## Functions
+
+- tangential_vector_to_circle
+- intersection
+- pick_start_points
+- ref_factors
+- reflction
+- refraction
+
+
+## 3D funcs
 
 ## Functions
 
@@ -35,14 +45,31 @@ start_point vector
 ### drawer
 
 Single light drawer.
-parameter:
-`@sphere: One of the intersectionElements class`  Define the sphere with certain radius and center
-`@incident_light: One of the intersectionElements class`  see Elements about light.
-`@refraction_index: Definition of the refraction index inside the sphere`  
-`@start_point: The coordinates of the starting point` Tuple or list contains three float numbers.
-`@intersection_time: Times of the intersection` How many times the light intersect the sphere.
+Parameter:
+`sphere` : One of the intersectionElements class. Define the sphere with certain radius and center
+`incident_light` : One of the intersectionElements class. see Elements about light
+`refraction_index` :  the refraction index of the paticle
+`start_point` : The coordinates of the starting point. Tuple or list contains three float numbers
+`intersection_time` ; Times of the intersection, How many times the light intersect the sphere
 
 Return:
 `dict`  
 `points: the intersection points` `list`  first intersection: points[0] second intersection point: points[1] etc.
 `lines: the lines to draw in the figre` `list` 
+
+### multi_line_drawer
+
+calculate and return points and lines with given a list of start points and incident lights.
+
+Parameter:
+`sphere` : incident of the class `Sphere`
+`incident_light` : incident of class `Light`
+`refraction_index` : the refraction index of the paticle
+`start_point_list` : a list that contains the coordiates of the start points
+`intersection_time` : How many times the light intersect the sphere
+
+Return:
+`dict`
+`points` : `list` of the intersection points
+`lines` : `dict` of the refraction lines and reflection lines
+`lights` : `dict` of the reflection lights and refraction lights

@@ -30,7 +30,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super(ApplicationWindow, self).__init__()
         # 记录起始点和入射光线的方向
-        self.data = {'start_point':[], 'vector':[], 'wavelength':[]}
+        self.data = {'start_point':[], 'vector':[]}
 
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)   #  Make Qt delete this widget when widget accept close event
         app_icon = QtGui.QIcon()
@@ -134,15 +134,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             direction_layout.addWidget(_lv)
             direction_layout.addWidget(_v)
 
-        # wavelength
-        wavelength_layout = QtWidgets.QHBoxLayout()
-        wavelength_layout.setContentsMargins(-20, 0, 0, 0)
-        wavelength_layout.setAlignment(QtCore.Qt.AlignLeft)
-        input_form.addRow('WaveLength:(nm)', wavelength_layout)
-        self.wl = QtWidgets.QDoubleSpinBox()
-        self.wl.setRange(500, 1000)
-        wavelength_layout.addWidget(self.wl)
-
         self.data_layout.addLayout(input_form)
 
         self.createModForm()
@@ -154,13 +145,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.tableWidget = QtWidgets.QTableWidget() # 新建表实例
         self.tableWidget.setGeometry(0, 0, 100, 600)
         self.tableWidget.setRowCount(1) # 初始化行数
-        self.tableWidget.setColumnCount(3)  # 初始化列数
+        self.tableWidget.setColumnCount(2)  # 初始化列数
         self.tableWidget.setColumnWidth(0, 120) # 设置第一列列宽
         self.tableWidget.setColumnWidth(1, 120) # 设置第二列列宽
-        self.tableWidget.setColumnWidth(2, 120) # 设置第三列列宽
         self.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem('Start Point'))   # 初始化第一列表头
         self.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem('Direction')) # 初始化第二列表头
-        self.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem('WaveLength'))    # 初始化第三列表头
 
     def createModForm(self):
         self.mod_form = QtWidgets.QFormLayout() # 实例话表格布局
@@ -184,20 +173,17 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def addData(self):
         start_point = tuple(round(_co.value()/1000, 5) for _co in self.co)  # 获取坐标值并除以1000 将mm单位转化为cm单位
         vector = tuple(round(_v.value(), 5) for _v in self.v)   # 获取坐标值
-        wavelength = float(self.wl.value())  # 获取波长
         # 如果数据中有重复起始点和方向数据 在状态栏中提示
-        for (p, v, w) in zip(self.data['start_point'], self.data['vector'], self.data['wavelength']):
-            if start_point == p and vector == v and wavelength == w:
+        for (p, v) in zip(self.data['start_point'], self.data['vector']):
+            if start_point == p and vector == v:
                 self.statusBar().showMessage('！ already have same data')
                 return
         self.data['start_point'].append(start_point)
         self.data['vector'].append(vector)
-        self.data['wavelength'].append(wavelength)
         # 在表格中增加来显示
         self.tableWidget.setRowCount(len(self.data['start_point'])+1)
         self.tableWidget.setItem(len(self.data['start_point']), 0, QtWidgets.QTableWidgetItem(str(start_point)))
         self.tableWidget.setItem(len(self.data['start_point']), 1, QtWidgets.QTableWidgetItem(str(vector)))
-        self.tableWidget.setItem(len(self.data['start_point']), 2, QtWidgets.QTableWidgetItem(str(wavelength)))
         self.delete_line.setMaximum(self.tableWidget.rowCount())    # 在删除行更改最大能删除的行
         self.delete_line.setMinimum(2)
         self.statusBar().clearMessage()
@@ -211,9 +197,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             return
         p = self.data['start_point'].pop(line-2)    # 除去表头和偏移量
         v = self.data['vector'].pop(line-2)
-        w = self.data['wavelength'].pop(line-2)
         self.tableWidget.removeRow(line-1)
-        self.statusBar().showMessage('Line: {3}, point:{0} vector:{1} wavelength:{2} has been removed.'.format(p, v, w, line))
+        self.statusBar().showMessage('Line: {2}, point:{0} vector:{1} has been removed.'.format(p, v, line))
         mini_row = 2 if self.tableWidget.rowCount() > 2 else 1
         self.delete_line.setMinimum(mini_row)
         self.delete_line.setMaximum(self.tableWidget.rowCount())
@@ -221,7 +206,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def clearData(self):
         """清空数据
         """
-        self.data = {'start_point':[], 'vector':[], 'wavelength':[]}
+        self.data = {'start_point':[], 'vector':[]}
         row_count = self.tableWidget.rowCount()
         for i in range(row_count, 0, -1):
             self.tableWidget.removeRow(i)
@@ -404,10 +389,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             points_and_lines = []
             start_points = self.data['start_point']
             directions = self.data['vector']
-            wavelengths = self.data['wavelength']
-            for p, v, w in zip(start_points, directions, wavelengths):
+            for p, v in zip(start_points, directions):
                 v = (float(v[0]), float(v[1]))
-                light = Light(w, Vec2d(v).normalized(), 1, unit='nm')
+                light = Light(waveLength, Vec2d(v).normalized(), 1, unit='nm')
                 points_and_lines.append(drawer(circle, light, refraction_index, intersection_time=times, start_point=p))
             x = []
             y = []
